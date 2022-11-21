@@ -1,5 +1,7 @@
 package com.praveen.jpa.entity;
 
+import com.praveen.jpa.model.CustomerRepresentation;
+import com.praveen.jpa.model.OrderRepresentation;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -42,6 +44,18 @@ public class Order implements Serializable {
   @ManyToOne
   @JoinColumn(name = "customer_id")
   private Customer customer;
+
+  public static Order fromModel(
+      OrderRepresentation orderRepresentation, CustomerRepresentation customerRepresentation) {
+
+    return Order.builder()
+        .productName(orderRepresentation.getProductName())
+        .quantity(orderRepresentation.getQuantity())
+        .amount(orderRepresentation.getAmount())
+        .orderTime(LocalDateTime.now())
+        .customer(Customer.fromModel(customerRepresentation))
+        .build();
+  }
 
   @Override
   public boolean equals(Object o) {
