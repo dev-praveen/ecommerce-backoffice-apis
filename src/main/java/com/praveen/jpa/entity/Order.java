@@ -1,7 +1,7 @@
 package com.praveen.jpa.entity;
 
-import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
+import com.praveen.jpa.model.OrderRequest;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -45,15 +45,25 @@ public class Order implements Serializable {
   @JoinColumn(name = "customer_id")
   private Customer customer;
 
-  public static Order fromModel(
-      OrderRepresentation orderRepresentation, CustomerRepresentation customerRepresentation) {
+  public static Order fromModel(OrderRequest orderRequest, Customer customer) {
 
     return Order.builder()
-        .productName(orderRepresentation.getProductName())
-        .quantity(orderRepresentation.getQuantity())
-        .amount(orderRepresentation.getAmount())
+        .productName(orderRequest.getProductName())
+        .quantity(orderRequest.getQuantity())
+        .amount(orderRequest.getAmount())
         .orderTime(LocalDateTime.now())
-        .customer(Customer.fromModel(customerRepresentation))
+        .customer(customer)
+        .build();
+  }
+
+  public OrderRepresentation toModel() {
+
+    return OrderRepresentation.builder()
+        .orderId(orderId)
+        .productName(productName)
+        .quantity(quantity)
+        .amount(amount)
+        .orderTime(orderTime)
         .build();
   }
 

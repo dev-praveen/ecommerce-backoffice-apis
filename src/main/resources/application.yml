@@ -13,6 +13,3 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: jpa
         format_sql: true
-  h2:
-    console:
-      enabled: true
