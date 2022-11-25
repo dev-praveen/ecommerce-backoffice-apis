@@ -3,17 +3,13 @@ package com.praveen.jpa.entity;
 import com.praveen.jpa.model.OrderRepresentation;
 import com.praveen.jpa.model.OrderRequest;
 import lombok.*;
-import org.hibernate.Hibernate;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-@Getter
+@Data
 @Entity
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ORDER")
@@ -41,18 +37,18 @@ public class Order implements Serializable {
   @Column(name = "ORDER_TIME")
   private LocalDateTime orderTime;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "customer_id")
   private Customer customer;
 
-  public static Order fromModel(OrderRequest orderRequest, Customer customer) {
+  public static Order fromModel(OrderRequest orderRequest, Customer customerRep) {
 
     return Order.builder()
         .productName(orderRequest.getProductName())
         .quantity(orderRequest.getQuantity())
         .amount(orderRequest.getAmount())
         .orderTime(LocalDateTime.now())
-        .customer(customer)
+        .customer(customerRep)
         .build();
   }
 
@@ -64,19 +60,7 @@ public class Order implements Serializable {
         .quantity(quantity)
         .amount(amount)
         .orderTime(orderTime)
+        .customerId(customer.getId())
         .build();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    Order order = (Order) o;
-    return orderId != null && Objects.equals(orderId, order.orderId);
-  }
-
-  @Override
-  public int hashCode() {
-    return getClass().hashCode();
   }
 }

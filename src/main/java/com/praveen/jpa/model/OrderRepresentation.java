@@ -13,4 +13,5 @@ public class OrderRepresentation {
   private Integer quantity;
   private Float amount;
   private LocalDateTime orderTime;
+  private Integer customerId;
 }

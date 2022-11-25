@@ -4,6 +4,7 @@ import com.praveen.jpa.dao.CustomerRepository;
 import com.praveen.jpa.dao.OrderRepository;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
+import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
 import com.praveen.jpa.model.OrderRequest;
@@ -25,7 +26,7 @@ public class EcommerceResource {
 
   @PostMapping(value = "/create-customer", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Void> createCustomer(
-      @RequestBody CustomerRepresentation customerRepresentation) {
+      @RequestBody CreateCustomerRequest customerRepresentation) {
 
     customerRepository.save(Customer.fromModel(customerRepresentation));
     return ResponseEntity.ok().build();
@@ -67,5 +68,13 @@ public class EcommerceResource {
     final var customerOptional = customerRepository.findById(customerId);
     customerOptional.ifPresentOrElse(customerRepository::delete, customerOptional::orElseThrow);
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<OrderRepresentation>> fetchOrders() {
+
+    final var orderRepresentations =
+        orderRepository.findAll().stream().map(Order::toModel).collect(Collectors.toList());
+    return ResponseEntity.ok(orderRepresentations);
   }
 }

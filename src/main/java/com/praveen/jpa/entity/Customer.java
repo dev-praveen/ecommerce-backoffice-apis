@@ -1,18 +1,20 @@
 package com.praveen.jpa.entity;
 
-import com.praveen.jpa.model.AddressRepresentation;
+import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-@Getter
+@Data
 @Entity
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "CUSTOMER")
@@ -42,7 +44,10 @@ public class Customer implements Serializable {
 
   @Embedded private Address address;
 
-  public static Customer fromModel(CustomerRepresentation customerRepresentation) {
+  @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<Order> orders = new ArrayList<>();
+
+  public static Customer fromModel(CreateCustomerRequest customerRepresentation) {
 
     return Customer.builder()
         .email(customerRepresentation.getEmail())
@@ -62,19 +67,7 @@ public class Customer implements Serializable {
         .email(email)
         .contactNumber(contactNumber)
         .address(address.toModel())
+        .orders(orders.stream().map(Order::toModel).collect(Collectors.toList()))
         .build();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    Customer customer = (Customer) o;
-    return id != null && Objects.equals(id, customer.id);
-  }
-
-  @Override
-  public int hashCode() {
-    return getClass().hashCode();
   }
 }
