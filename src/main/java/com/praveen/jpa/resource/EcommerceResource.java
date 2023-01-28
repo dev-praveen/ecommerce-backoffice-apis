@@ -9,6 +9,7 @@ import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
 import com.praveen.jpa.model.OrderRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class EcommerceResource {
       @RequestBody CreateCustomerRequest customerRepresentation) {
 
     customerRepository.save(Customer.fromModel(customerRepresentation));
-    return ResponseEntity.ok().build();
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @GetMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,7 +52,7 @@ public class EcommerceResource {
           orderRepository.save(order);
         },
         customerOptional::orElseThrow);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @GetMapping(value = "/orders/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
