@@ -2,8 +2,11 @@ package com.praveen.jpa.entity;
 
 import com.praveen.jpa.model.OrderRepresentation;
 import com.praveen.jpa.model.OrderRequest;
-import lombok.*;
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

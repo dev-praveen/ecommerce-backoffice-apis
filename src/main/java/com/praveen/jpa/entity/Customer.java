@@ -2,14 +2,14 @@ package com.praveen.jpa.entity;
 
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
-import lombok.*;
-import org.hibernate.Hibernate;
-
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
@@ -27,7 +27,6 @@ public class Customer implements Serializable {
       sequenceName = "EID_GENERATOR_SEQUENCE",
       initialValue = 165850,
       allocationSize = 1)
-  @Column(name = "ID", nullable = false, insertable = false, updatable = false)
   private Integer id;
 
   @Column(name = "FIRST_NAME")
@@ -46,6 +45,11 @@ public class Customer implements Serializable {
 
   @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Order> orders = new ArrayList<>();
+
+  public void setOrders(List<Order> orders) {
+    orders.forEach(order -> order.setCustomer(this));
+    this.orders = orders;
+  }
 
   public static Customer fromModel(CreateCustomerRequest customerRepresentation) {
 
