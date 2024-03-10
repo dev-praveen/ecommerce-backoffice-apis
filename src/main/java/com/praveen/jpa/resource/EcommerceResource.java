@@ -1,13 +1,10 @@
 package com.praveen.jpa.resource;
 
-import com.praveen.jpa.dao.CustomerRepository;
-import com.praveen.jpa.dao.OrderRepository;
-import com.praveen.jpa.entity.Customer;
-import com.praveen.jpa.entity.Order;
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
 import com.praveen.jpa.model.OrderRequest;
+import com.praveen.jpa.service.EcommerceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,58 +17,48 @@ import java.util.List;
 @RequestMapping("/ecommerce")
 public class EcommerceResource {
 
-  private final OrderRepository orderRepository;
-  private final CustomerRepository customerRepository;
+  private final EcommerceService ecommerceService;
 
   @PostMapping(value = "/create-customer", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> createCustomer(
-      @RequestBody CreateCustomerRequest customerRepresentation) {
+  public ResponseEntity<Integer> createCustomer(
+      @RequestBody CreateCustomerRequest customerRequest) {
 
-    customerRepository.save(Customer.fromModel(customerRepresentation));
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+    final Integer customerId = ecommerceService.saveCustomer(customerRequest);
+    return new ResponseEntity<>(customerId, HttpStatus.CREATED);
   }
 
   @GetMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<CustomerRepresentation>> getAllCustomers() {
 
-    final var customers = customerRepository.findAll().stream().map(Customer::toModel).toList();
+    final var customers = ecommerceService.findAllCustomers();
     return ResponseEntity.ok(customers);
   }
 
   @PostMapping(value = "/place-order/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> placeOrderByCustomerId(
+  public ResponseEntity<Long> placeOrderByCustomerId(
       @PathVariable Integer customerId, @RequestBody OrderRequest orderRequest) {
 
-    final var customerOptional = customerRepository.findById(customerId);
-    customerOptional.ifPresentOrElse(
-        customer -> {
-          final var order = Order.fromModel(orderRequest, customer);
-          orderRepository.save(order);
-        },
-        customerOptional::orElseThrow);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+    final Long orderId = ecommerceService.saveOrder(customerId, orderRequest);
+    return new ResponseEntity<>(orderId, HttpStatus.CREATED);
   }
 
   @GetMapping(value = "/orders/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<OrderRepresentation>> getOrders(@PathVariable Integer customerId) {
-    final var orders = orderRepository.findByCustomerId(customerId);
-    final var orderRepresentationList = orders.stream().map(Order::toModel).toList();
-    return ResponseEntity.ok(orderRepresentationList);
+    final List<OrderRepresentation> allOrders = ecommerceService.findAllOrders(customerId);
+    return ResponseEntity.ok(allOrders);
   }
 
   @DeleteMapping("/delete/{customerId}")
   public ResponseEntity<Void> deleteCustomer(@PathVariable Integer customerId) {
 
-    final var customerOptional = customerRepository.findById(customerId);
-    customerOptional.ifPresentOrElse(customerRepository::delete, customerOptional::orElseThrow);
+    ecommerceService.deleteCustomer(customerId);
     return ResponseEntity.ok().build();
   }
 
   @GetMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<OrderRepresentation>> fetchOrders() {
 
-    final var orderRepresentations =
-        orderRepository.findAll().stream().map(Order::toModel).toList();
-    return ResponseEntity.ok(orderRepresentations);
+    final List<OrderRepresentation> orders = ecommerceService.fetchAllOrders();
+    return ResponseEntity.ok(orders);
   }
 }
