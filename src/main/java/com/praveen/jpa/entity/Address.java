@@ -1,15 +1,13 @@
 package com.praveen.jpa.entity;
 
 import com.praveen.jpa.model.AddressRepresentation;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
-@Data
+@Getter
+@Setter
 @Builder
 @Embeddable
 @NoArgsConstructor

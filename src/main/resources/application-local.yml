@@ -1,19 +1,23 @@
 spring:
-  application:
-    name: ecommerce-backoffice-appis
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
         format_sql: true
+  h2:
+    console:
+      enabled: true
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+logging:
+  level:
+    sql: debug

@@ -13,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,8 +34,7 @@ public class EcommerceResource {
   @GetMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<CustomerRepresentation>> getAllCustomers() {
 
-    final var customers =
-        customerRepository.findAll().stream().map(Customer::toModel).collect(Collectors.toList());
+    final var customers = customerRepository.findAll().stream().map(Customer::toModel).toList();
     return ResponseEntity.ok(customers);
   }
 
@@ -58,8 +55,7 @@ public class EcommerceResource {
   @GetMapping(value = "/orders/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<OrderRepresentation>> getOrders(@PathVariable Integer customerId) {
     final var orders = orderRepository.findByCustomerId(customerId);
-    final var orderRepresentationList =
-        orders.stream().map(Order::toModel).collect(Collectors.toList());
+    final var orderRepresentationList = orders.stream().map(Order::toModel).toList();
     return ResponseEntity.ok(orderRepresentationList);
   }
 
@@ -75,7 +71,7 @@ public class EcommerceResource {
   public ResponseEntity<List<OrderRepresentation>> fetchOrders() {
 
     final var orderRepresentations =
-        orderRepository.findAll().stream().map(Order::toModel).collect(Collectors.toList());
+        orderRepository.findAll().stream().map(Order::toModel).toList();
     return ResponseEntity.ok(orderRepresentations);
   }
 }

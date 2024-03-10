@@ -2,22 +2,18 @@ package com.praveen.jpa.entity;
 
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "CUSTOMER")
+@Table(name = "CUSTOMERS")
 public class Customer implements Serializable {
 
   @Id
@@ -43,23 +39,26 @@ public class Customer implements Serializable {
 
   @Embedded private Address address;
 
-  @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Order> orders = new ArrayList<>();
-
-  public void setOrders(List<Order> orders) {
-    orders.forEach(order -> order.setCustomer(this));
-    this.orders = orders;
-  }
 
   public static Customer fromModel(CreateCustomerRequest customerRepresentation) {
 
-    return Customer.builder()
-        .email(customerRepresentation.getEmail())
-        .firstName(customerRepresentation.getFirstName())
-        .lastName(customerRepresentation.getLastName())
-        .address(Address.fromModel(customerRepresentation.getAddress()))
-        .contactNumber(customerRepresentation.getContactNumber())
-        .build();
+    final Customer customer = new Customer();
+    customer.setEmail(customerRepresentation.getEmail());
+    customer.setFirstName(customerRepresentation.getFirstName());
+    customer.setLastName(customerRepresentation.getLastName());
+    customer.setAddress(Address.fromModel(customerRepresentation.getAddress()));
+    customer.setContactNumber(customerRepresentation.getContactNumber());
+    customer.setOrders(null);
+    return customer;
+  }
+
+  public void setOrders(List<Order> orders) {
+    if (null != orders) {
+      orders.forEach(order -> order.setCustomer(this));
+    }
+    this.orders = orders;
   }
 
   public CustomerRepresentation toModel() {
@@ -71,7 +70,7 @@ public class Customer implements Serializable {
         .email(email)
         .contactNumber(contactNumber)
         .address(address.toModel())
-        .orders(orders.stream().map(Order::toModel).collect(Collectors.toList()))
+        .orders(orders.stream().map(Order::toModel).toList())
         .build();
   }
 }

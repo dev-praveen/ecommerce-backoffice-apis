@@ -2,20 +2,17 @@ package com.praveen.jpa.entity;
 
 import com.praveen.jpa.model.OrderRepresentation;
 import com.praveen.jpa.model.OrderRequest;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ORDER")
+@Table(name = "ORDERS")
 public class Order implements Serializable {
 
   @Id
@@ -25,7 +22,7 @@ public class Order implements Serializable {
       sequenceName = "ORDER_ID_GENERATOR_SEQUENCE",
       initialValue = 1145550,
       allocationSize = 1)
-  @Column(name = "ORDER_ID", nullable = false, insertable = false, updatable = false)
+  @Column(name = "ORDER_ID")
   private Long orderId;
 
   @Column(name = "PRODUCT_NAME")
@@ -46,13 +43,14 @@ public class Order implements Serializable {
 
   public static Order fromModel(OrderRequest orderRequest, Customer customerRep) {
 
-    return Order.builder()
-        .productName(orderRequest.getProductName())
-        .quantity(orderRequest.getQuantity())
-        .amount(orderRequest.getAmount())
-        .orderTime(LocalDateTime.now())
-        .customer(customerRep)
-        .build();
+    final Order order = new Order();
+    order.setProductName(orderRequest.getProductName());
+    order.setQuantity(orderRequest.getQuantity());
+    order.setAmount(orderRequest.getAmount());
+    order.setOrderTime(LocalDateTime.now());
+    order.setCustomer(customerRep);
+
+    return order;
   }
 
   public OrderRepresentation toModel() {
