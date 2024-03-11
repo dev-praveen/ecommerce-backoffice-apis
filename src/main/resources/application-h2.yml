@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:mydb
+    url: jdbc:h2:mem:mydb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=POSTGRESQL;INIT=CREATE SCHEMA IF NOT EXISTS ECOMMERCE;
     username: sa
     password: password
     driverClassName: org.h2.Driver
@@ -12,11 +12,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_schema: ecommerce
   h2:
     console:
       enabled: true
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
+    default-schema: ecommerce
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
