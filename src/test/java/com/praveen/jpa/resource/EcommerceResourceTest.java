@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = EcommerceResource.class)
@@ -50,23 +51,6 @@ class EcommerceResourceTest {
   @Test
   void shouldCreateCustomer() throws Exception {
 
-    String jsonRequest =
-        """
-    {
-        "firstName": "Alice",
-        "lastName": "Smith",
-        "email": "alice.smith@example.com",
-        "contactNumber": 9876543210,
-        "address": {
-            "houseNo": "456",
-            "street": "Broadway",
-            "landmark": "Next to Mall",
-            "pinCode": "54321",
-            "city": "New City"
-        }
-    }
-    """;
-
     when(ecommerceService.saveCustomer(any(CreateCustomerRequest.class))).thenReturn(1);
 
     final var resultActions =
@@ -74,7 +58,7 @@ class EcommerceResourceTest {
             .perform(
                 post("/ecommerce/create-customer")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(jsonRequest))
+                    .content(MockResourceData.customerJsonRequest()))
             .andExpect(status().isCreated());
 
     final var response = resultActions.andReturn().getResponse();
@@ -82,7 +66,16 @@ class EcommerceResourceTest {
   }
 
   @Test
-  void getAllCustomers() {}
+  void getAllCustomers() throws Exception {
+
+    when(ecommerceService.findAllCustomers()).thenReturn(MockResourceData.getMockCustomers());
+
+    final var response =
+        mockMvc
+            .perform(get("/ecommerce/customers").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    assertThat(response).isNotNull();
+  }
 
   @Test
   void placeOrderByCustomerId() {}
