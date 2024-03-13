@@ -4,6 +4,9 @@ spring:
     username: sa
     password: password
     driverClassName: org.h2.Driver
+  sql:
+    init:
+      data-locations: classpath:data-h2.sql
   jpa:
     hibernate:
     database-platform: org.hibernate.dialect.H2Dialect
