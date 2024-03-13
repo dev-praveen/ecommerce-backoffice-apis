@@ -1,13 +1,11 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:mydb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=POSTGRESQL;INIT=CREATE SCHEMA IF NOT EXISTS ECOMMERCE;
+    url: jdbc:h2:mem:mydb;DB_CLOSE_DELAY=-1;MODE=POSTGRESQL;INIT=CREATE SCHEMA IF NOT EXISTS ECOMMERCE;
     username: sa
     password: password
     driverClassName: org.h2.Driver
   jpa:
-    show-sql: true
     hibernate:
-      ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
