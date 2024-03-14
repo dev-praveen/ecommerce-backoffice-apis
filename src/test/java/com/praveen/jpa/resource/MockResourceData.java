@@ -28,6 +28,17 @@ public interface MockResourceData {
             """;
   }
 
+  static String orderJsonRequest() {
+
+    return """
+            {
+              "productName": "tiles",
+              "quantity": 200,
+              "amount": 35689.00
+            }
+            """;
+  }
+
   static List<CustomerRepresentation> getMockCustomers() {
 
     CustomerRepresentation customer1 =
@@ -85,7 +96,7 @@ public interface MockResourceData {
         OrderRepresentation.builder()
             .orderId(2L)
             .orderTime(LocalDateTime.now())
-            .customerId(2)
+            .customerId(1)
             .amount(190.00f)
             .productName("sofa")
             .quantity(5)

@@ -10,11 +10,14 @@ import com.praveen.jpa.model.OrderRepresentation;
 import com.praveen.jpa.model.OrderRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class EcommerceService {
 
   private final OrderRepository orderRepository;
@@ -31,6 +34,7 @@ public class EcommerceService {
     return customerRepository.findAll().stream().map(Customer::toModel).toList();
   }
 
+  @Transactional
   public Long saveOrder(Integer customerId, OrderRequest orderRequest) {
 
     final var customer = findCustomer(customerId);
@@ -53,6 +57,7 @@ public class EcommerceService {
     return customerOptional.get();
   }
 
+  @Transactional
   public void deleteCustomer(Integer customerId) {
 
     final var customer = findCustomer(customerId);

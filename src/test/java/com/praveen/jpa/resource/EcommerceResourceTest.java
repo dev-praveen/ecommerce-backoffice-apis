@@ -2,6 +2,7 @@ package com.praveen.jpa.resource;
 
 import com.praveen.jpa.model.AddressRepresentation;
 import com.praveen.jpa.model.CreateCustomerRequest;
+import com.praveen.jpa.model.OrderRequest;
 import com.praveen.jpa.service.EcommerceService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = EcommerceResource.class)
@@ -23,24 +23,6 @@ class EcommerceResourceTest {
 
   @Autowired private MockMvc mockMvc;
   @MockBean private EcommerceService ecommerceService;
-
-  private static void createCustomer() {
-    CreateCustomerRequest request =
-        CreateCustomerRequest.builder()
-            .firstName("Alice")
-            .lastName("Smith")
-            .email("alice.smith@example.com")
-            .contactNumber(9876543210L)
-            .address(
-                AddressRepresentation.builder()
-                    .houseNo("456")
-                    .street("Broadway")
-                    .landmark("Next to Mall")
-                    .pinCode("54321")
-                    .city("New City")
-                    .build())
-            .build();
-  }
 
   @BeforeEach
   void setUp() {}
@@ -63,6 +45,7 @@ class EcommerceResourceTest {
 
     final var response = resultActions.andReturn().getResponse();
     assertThat(response).isNotNull();
+    assertThat(response.getContentAsString()).isEqualTo("1");
   }
 
   @Test
@@ -78,14 +61,57 @@ class EcommerceResourceTest {
   }
 
   @Test
-  void placeOrderByCustomerId() {}
+  void placeOrderByCustomerId() throws Exception {
+
+    when(ecommerceService.saveOrder(any(Integer.class), any(OrderRequest.class))).thenReturn(1l);
+    final var resultActions =
+        mockMvc
+            .perform(
+                post("/ecommerce/place-order/{customerId}", 100)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(MockResourceData.orderJsonRequest()))
+            .andExpect(status().isCreated());
+    final var response = resultActions.andReturn().getResponse();
+    assertThat(response.getContentAsString()).isEqualTo("1");
+  }
 
   @Test
-  void getOrders() {}
+  void getOrdersByCustomerId() throws Exception {
+
+    when(ecommerceService.findAllOrders(1)).thenReturn(MockResourceData.getMockOrders());
+
+    final var response =
+        mockMvc
+            .perform(
+                get("/ecommerce/orders/{customerId}", 1).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    assertThat(response).isNotNull();
+  }
 
   @Test
-  void deleteCustomer() {}
+  void deleteCustomer() throws Exception {
+
+    doNothing().when(ecommerceService).deleteCustomer(any(Integer.class));
+
+    final var response =
+        mockMvc
+            .perform(
+                delete("/ecommerce/delete/{customerId}", 1).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+    verify(ecommerceService, times(1)).deleteCustomer(1);
+    assertThat(response).isNotNull();
+  }
 
   @Test
-  void fetchOrders() {}
+  void fetchAllOrders() throws Exception {
+
+    when(ecommerceService.fetchAllOrders()).thenReturn(MockResourceData.getMockOrders());
+
+    final var response =
+        mockMvc
+            .perform(get("/ecommerce/orders").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    assertThat(response).isNotNull();
+  }
 }
