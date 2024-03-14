@@ -23,6 +23,7 @@ public class EcommerceService {
   private final OrderRepository orderRepository;
   private final CustomerRepository customerRepository;
 
+  @Transactional
   public Integer saveCustomer(CreateCustomerRequest customerRepresentation) {
 
     final Customer customer = customerRepository.save(Customer.fromModel(customerRepresentation));
