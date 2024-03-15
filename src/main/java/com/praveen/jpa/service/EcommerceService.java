@@ -50,6 +50,10 @@ public class EcommerceService {
     return orders.stream().map(Order::toModel).toList();
   }
 
+  public CustomerRepresentation getCustomer(Integer customerId) {
+    return findCustomer(customerId).toModel();
+  }
+
   private Customer findCustomer(Integer customerId) {
     final var customerOptional = customerRepository.findById(customerId);
     if (customerOptional.isEmpty()) {

@@ -1,6 +1,5 @@
 package com.praveen.jpa.resource;
 
-import com.praveen.jpa.model.AddressRepresentation;
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.OrderRequest;
 import com.praveen.jpa.service.EcommerceService;
@@ -111,6 +110,20 @@ class EcommerceResourceTest {
     final var response =
         mockMvc
             .perform(get("/ecommerce/orders").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    assertThat(response).isNotNull();
+  }
+
+  @Test
+  void shouldFetchCustomerById() throws Exception {
+
+    when(ecommerceService.getCustomer(any(Integer.class)))
+        .thenReturn(MockResourceData.getMockCustomers().get(1));
+
+    final var response =
+        mockMvc
+            .perform(
+                get("/ecommerce/customer/{customerId}", 2).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     assertThat(response).isNotNull();
   }

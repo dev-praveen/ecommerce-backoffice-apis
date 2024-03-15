@@ -1,5 +1,6 @@
 package com.praveen.jpa.resource;
 
+import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
@@ -60,5 +61,12 @@ public class EcommerceResource {
 
     final List<OrderRepresentation> orders = ecommerceService.fetchAllOrders();
     return ResponseEntity.ok(orders);
+  }
+
+  @GetMapping("/customer/{customerId}")
+  public ResponseEntity<CustomerRepresentation> getCustomer(@PathVariable Integer customerId) {
+
+    final var customer = ecommerceService.getCustomer(customerId);
+    return ResponseEntity.ok(customer);
   }
 }
