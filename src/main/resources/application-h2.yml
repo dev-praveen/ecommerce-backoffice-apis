@@ -9,11 +9,11 @@ spring:
       data-locations: classpath:data-h2.sql
   jpa:
     hibernate:
-    database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
         format_sql: true
         default_schema: ecommerce
+    open-in-view: false
   h2:
     console:
       enabled: true

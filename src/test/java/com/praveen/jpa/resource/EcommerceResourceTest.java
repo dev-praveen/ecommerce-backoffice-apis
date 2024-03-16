@@ -37,7 +37,7 @@ class EcommerceResourceTest {
     final var resultActions =
         mockMvc
             .perform(
-                post("/ecommerce/create-customer")
+                post("/ecommerce/customer")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(MockResourceData.customerJsonRequest()))
             .andExpect(status().isCreated());
@@ -45,6 +45,25 @@ class EcommerceResourceTest {
     final var response = resultActions.andReturn().getResponse();
     assertThat(response).isNotNull();
     assertThat(response.getContentAsString()).isEqualTo("1");
+  }
+
+  @Test
+  void shouldUpdateCustomer() throws Exception {
+
+    doNothing()
+        .when(ecommerceService)
+        .updateCustomer(any(Integer.class), any(CreateCustomerRequest.class));
+
+    final var resultActions =
+        mockMvc
+            .perform(
+                put("/ecommerce/customer/{customerId}", 2)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(MockResourceData.customerJsonRequest()))
+            .andExpect(status().isAccepted());
+
+    final var response = resultActions.andReturn().getResponse();
+    assertThat(response).isNotNull();
   }
 
   @Test
@@ -66,7 +85,7 @@ class EcommerceResourceTest {
     final var resultActions =
         mockMvc
             .perform(
-                post("/ecommerce/place-order/{customerId}", 100)
+                post("/ecommerce/placeOrder/{customerId}", 100)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(MockResourceData.orderJsonRequest()))
             .andExpect(status().isCreated());
@@ -95,7 +114,8 @@ class EcommerceResourceTest {
     final var response =
         mockMvc
             .perform(
-                delete("/ecommerce/delete/{customerId}", 1).contentType(MediaType.APPLICATION_JSON))
+                delete("/ecommerce/customer/{customerId}", 1)
+                    .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
     verify(ecommerceService, times(1)).deleteCustomer(1);

@@ -20,12 +20,20 @@ public class EcommerceResource {
 
   private final EcommerceService ecommerceService;
 
-  @PostMapping(value = "/create-customer", consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Integer> createCustomer(
       @RequestBody CreateCustomerRequest customerRequest) {
 
     final Integer customerId = ecommerceService.saveCustomer(customerRequest);
     return new ResponseEntity<>(customerId, HttpStatus.CREATED);
+  }
+
+  @PutMapping(value = "/customer/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Void> updateCustomer(
+      @PathVariable Integer customerId, @RequestBody CreateCustomerRequest customerRequest) {
+
+    ecommerceService.updateCustomer(customerId, customerRequest);
+    return new ResponseEntity<>(HttpStatus.ACCEPTED);
   }
 
   @GetMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,7 +43,7 @@ public class EcommerceResource {
     return ResponseEntity.ok(customers);
   }
 
-  @PostMapping(value = "/place-order/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/placeOrder/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Long> placeOrderByCustomerId(
       @PathVariable Integer customerId, @RequestBody OrderRequest orderRequest) {
 
@@ -49,7 +57,7 @@ public class EcommerceResource {
     return ResponseEntity.ok(allOrders);
   }
 
-  @DeleteMapping("/delete/{customerId}")
+  @DeleteMapping("/customer/{customerId}")
   public ResponseEntity<Void> deleteCustomer(@PathVariable Integer customerId) {
 
     ecommerceService.deleteCustomer(customerId);
@@ -63,7 +71,7 @@ public class EcommerceResource {
     return ResponseEntity.ok(orders);
   }
 
-  @GetMapping("/customer/{customerId}")
+  @GetMapping(value = "/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<CustomerRepresentation> getCustomer(@PathVariable Integer customerId) {
 
     final var customer = ecommerceService.getCustomer(customerId);

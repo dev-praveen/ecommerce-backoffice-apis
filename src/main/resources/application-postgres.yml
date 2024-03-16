@@ -9,11 +9,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         format_sql: true
         default_schema: ecommerce
+    open-in-view: false
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
     default-schema: ecommerce

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,16 @@ public class EcommerceService {
 
     final Customer customer = customerRepository.save(Customer.fromModel(customerRepresentation));
     return customer.getId();
+  }
+
+  @Transactional
+  public void updateCustomer(Integer customerId, CreateCustomerRequest customerRepresentation) {
+
+    final var isCustomerExist = customerRepository.existsById(customerId);
+    if (!isCustomerExist) {
+      throw new NoSuchElementException();
+    }
+    customerRepository.save(Customer.fromModel(customerRepresentation));
   }
 
   public List<CustomerRepresentation> findAllCustomers() {
