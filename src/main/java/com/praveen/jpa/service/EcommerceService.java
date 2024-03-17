@@ -4,6 +4,7 @@ import com.praveen.jpa.dao.CustomerRepository;
 import com.praveen.jpa.dao.OrderRepository;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
+import com.praveen.jpa.exception.CustomerNotFoundException;
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
@@ -11,10 +12,7 @@ import com.praveen.jpa.model.OrderRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +34,8 @@ public class EcommerceService {
 
     final var isCustomerExist = customerRepository.existsById(customerId);
     if (!isCustomerExist) {
-      throw new NoSuchElementException();
+      throw new CustomerNotFoundException(
+          "Customer does not exist in the database with id: " + customerId);
     }
     customerRepository.save(Customer.fromModel(customerRepresentation));
   }
@@ -68,7 +67,7 @@ public class EcommerceService {
   private Customer findCustomer(Integer customerId) {
     final var customerOptional = customerRepository.findById(customerId);
     if (customerOptional.isEmpty()) {
-      throw new NoSuchElementException();
+      throw new CustomerNotFoundException("Customer not found in database wit id " + customerId);
     }
     return customerOptional.get();
   }

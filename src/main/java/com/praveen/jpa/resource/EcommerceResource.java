@@ -1,6 +1,5 @@
 package com.praveen.jpa.resource;
 
-import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
