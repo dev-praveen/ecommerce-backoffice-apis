@@ -30,7 +30,7 @@ values
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    order_id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'mattress',
@@ -42,7 +42,7 @@ INSERT INTO ecommerce.orders (
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    order_id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'bedsheets',
@@ -54,7 +54,7 @@ INSERT INTO ecommerce.orders (
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    order_id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'blankets',
@@ -66,7 +66,7 @@ INSERT INTO ecommerce.orders (
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    order_id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'comforters',
@@ -78,7 +78,7 @@ INSERT INTO ecommerce.orders (
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    order_id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'pillows',
@@ -90,7 +90,7 @@ INSERT INTO ecommerce.orders (
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    order_id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'mattress',
@@ -102,7 +102,7 @@ INSERT INTO ecommerce.orders (
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    order_id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'bedsheets',
@@ -114,7 +114,7 @@ INSERT INTO ecommerce.orders (
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    order_id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'blankets',
@@ -126,7 +126,7 @@ INSERT INTO ecommerce.orders (
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    order_id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'comforters',

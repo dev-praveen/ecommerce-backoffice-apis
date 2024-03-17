@@ -1,0 +1,23 @@
+databaseChangeLog:
+    - changeSet:
+          id: 1710140134882-6
+          author: praveen
+          objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+          changes:
+              - modifyDataType:
+                    columnName: id
+                    newDataType: BIGINT
+                    tableName: customers
+              - renameColumn:
+                    newColumnName: id
+                    oldColumnName: order_id
+                    tableName: orders
+              - addNotNullConstraint:
+                    columnName: first_name
+                    tableName: customers
+              - addNotNullConstraint:
+                    columnName: contact_number
+                    tableName: customers
+              - addNotNullConstraint:
+                    columnName: pin_code
+                    tableName: customers

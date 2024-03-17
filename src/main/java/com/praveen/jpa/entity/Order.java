@@ -22,8 +22,8 @@ public class Order implements Serializable {
       sequenceName = "ORDER_ID_GENERATOR_SEQUENCE",
       initialValue = 1145550,
       allocationSize = 1)
-  @Column(name = "ORDER_ID")
-  private Long orderId;
+  @Column(name = "ID")
+  private Long id;
 
   @Column(name = "PRODUCT_NAME")
   private String productName;
@@ -56,7 +56,7 @@ public class Order implements Serializable {
   public OrderRepresentation toModel() {
 
     return OrderRepresentation.builder()
-        .orderId(orderId)
+        .orderId(id)
         .productName(productName)
         .quantity(quantity)
         .amount(amount)

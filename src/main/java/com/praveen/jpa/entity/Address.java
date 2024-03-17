@@ -6,6 +6,8 @@ import lombok.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Builder
@@ -23,7 +25,7 @@ public class Address {
   @Column(name = "LANDMARK")
   private String landmark;
 
-  @Column(name = "PIN_CODE")
+  @Column(name = "PIN_CODE", nullable = false)
   private String pinCode;
 
   @Column(name = "CITY")

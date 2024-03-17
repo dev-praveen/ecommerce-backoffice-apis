@@ -23,9 +23,9 @@ public class Customer implements Serializable {
       sequenceName = "EID_GENERATOR_SEQUENCE",
       initialValue = 165850,
       allocationSize = 1)
-  private Integer id;
+  private Long id;
 
-  @Column(name = "FIRST_NAME")
+  @Column(name = "FIRST_NAME", nullable = false)
   private String firstName;
 
   @Column(name = "LAST_NAME")
@@ -34,7 +34,7 @@ public class Customer implements Serializable {
   @Column(name = "EMAIL")
   private String email;
 
-  @Column(name = "CONTACT_NUMBER")
+  @Column(name = "CONTACT_NUMBER", nullable = false)
   private Long contactNumber;
 
   @Embedded private Address address;

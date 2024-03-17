@@ -32,7 +32,7 @@ class EcommerceResourceTest {
   @Test
   void shouldCreateCustomer() throws Exception {
 
-    when(ecommerceService.saveCustomer(any(CreateCustomerRequest.class))).thenReturn(1);
+    when(ecommerceService.saveCustomer(any(CreateCustomerRequest.class))).thenReturn(1L);
 
     final var resultActions =
         mockMvc
@@ -52,7 +52,7 @@ class EcommerceResourceTest {
 
     doNothing()
         .when(ecommerceService)
-        .updateCustomer(any(Integer.class), any(CreateCustomerRequest.class));
+        .updateCustomer(any(Long.class), any(CreateCustomerRequest.class));
 
     final var resultActions =
         mockMvc
@@ -81,7 +81,7 @@ class EcommerceResourceTest {
   @Test
   void placeOrderByCustomerId() throws Exception {
 
-    when(ecommerceService.saveOrder(any(Integer.class), any(OrderRequest.class))).thenReturn(1l);
+    when(ecommerceService.saveOrder(any(Long.class), any(OrderRequest.class))).thenReturn(1l);
     final var resultActions =
         mockMvc
             .perform(
@@ -96,7 +96,7 @@ class EcommerceResourceTest {
   @Test
   void getOrdersByCustomerId() throws Exception {
 
-    when(ecommerceService.findAllOrders(1)).thenReturn(MockResourceData.getMockOrders());
+    when(ecommerceService.findAllOrders(1L)).thenReturn(MockResourceData.getMockOrders());
 
     final var response =
         mockMvc
@@ -109,7 +109,7 @@ class EcommerceResourceTest {
   @Test
   void deleteCustomer() throws Exception {
 
-    doNothing().when(ecommerceService).deleteCustomer(any(Integer.class));
+    doNothing().when(ecommerceService).deleteCustomer(any(Long.class));
 
     final var response =
         mockMvc
@@ -118,7 +118,7 @@ class EcommerceResourceTest {
                     .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-    verify(ecommerceService, times(1)).deleteCustomer(1);
+    verify(ecommerceService, times(1)).deleteCustomer(1L);
     assertThat(response).isNotNull();
   }
 
@@ -137,7 +137,7 @@ class EcommerceResourceTest {
   @Test
   void shouldFetchCustomerById() throws Exception {
 
-    when(ecommerceService.getCustomer(any(Integer.class)))
+    when(ecommerceService.getCustomer(any(Long.class)))
         .thenReturn(MockResourceData.getMockCustomers().get(1));
 
     final var response =

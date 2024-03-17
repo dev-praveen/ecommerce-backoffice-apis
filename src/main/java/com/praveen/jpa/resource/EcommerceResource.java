@@ -20,16 +20,16 @@ public class EcommerceResource {
   private final EcommerceService ecommerceService;
 
   @PostMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Integer> createCustomer(
+  public ResponseEntity<Long> createCustomer(
       @RequestBody CreateCustomerRequest customerRequest) {
 
-    final Integer customerId = ecommerceService.saveCustomer(customerRequest);
+    final Long customerId = ecommerceService.saveCustomer(customerRequest);
     return new ResponseEntity<>(customerId, HttpStatus.CREATED);
   }
 
   @PutMapping(value = "/customer/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Void> updateCustomer(
-      @PathVariable Integer customerId, @RequestBody CreateCustomerRequest customerRequest) {
+      @PathVariable Long customerId, @RequestBody CreateCustomerRequest customerRequest) {
 
     ecommerceService.updateCustomer(customerId, customerRequest);
     return new ResponseEntity<>(HttpStatus.ACCEPTED);
@@ -44,20 +44,20 @@ public class EcommerceResource {
 
   @PostMapping(value = "/placeOrder/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Long> placeOrderByCustomerId(
-      @PathVariable Integer customerId, @RequestBody OrderRequest orderRequest) {
+      @PathVariable Long customerId, @RequestBody OrderRequest orderRequest) {
 
     final Long orderId = ecommerceService.saveOrder(customerId, orderRequest);
     return new ResponseEntity<>(orderId, HttpStatus.CREATED);
   }
 
   @GetMapping(value = "/orders/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<OrderRepresentation>> getOrders(@PathVariable Integer customerId) {
+  public ResponseEntity<List<OrderRepresentation>> getOrders(@PathVariable Long customerId) {
     final List<OrderRepresentation> allOrders = ecommerceService.findAllOrders(customerId);
     return ResponseEntity.ok(allOrders);
   }
 
   @DeleteMapping("/customer/{customerId}")
-  public ResponseEntity<Void> deleteCustomer(@PathVariable Integer customerId) {
+  public ResponseEntity<Void> deleteCustomer(@PathVariable Long customerId) {
 
     ecommerceService.deleteCustomer(customerId);
     return ResponseEntity.ok().build();
@@ -71,7 +71,7 @@ public class EcommerceResource {
   }
 
   @GetMapping(value = "/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<CustomerRepresentation> getCustomer(@PathVariable Integer customerId) {
+  public ResponseEntity<CustomerRepresentation> getCustomer(@PathVariable Long customerId) {
 
     final var customer = ecommerceService.getCustomer(customerId);
     return ResponseEntity.ok(customer);

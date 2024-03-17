@@ -43,7 +43,7 @@ public interface MockResourceData {
 
     CustomerRepresentation customer1 =
         CustomerRepresentation.builder()
-            .id(1)
+            .id(1L)
             .email("john.deo@email.com")
             .firstName("john")
             .lastName("doe")
@@ -62,7 +62,7 @@ public interface MockResourceData {
     final List<OrderRepresentation> mockOrders = getMockOrders();
     CustomerRepresentation customer2 =
         CustomerRepresentation.builder()
-            .id(2)
+            .id(2L)
             .email("john.cena@email.com")
             .firstName("john")
             .lastName("cena")
@@ -86,7 +86,7 @@ public interface MockResourceData {
         OrderRepresentation.builder()
             .orderId(1L)
             .orderTime(LocalDateTime.now())
-            .customerId(1)
+            .customerId(1L)
             .amount(1200.00f)
             .productName("chair")
             .quantity(10)
@@ -96,7 +96,7 @@ public interface MockResourceData {
         OrderRepresentation.builder()
             .orderId(2L)
             .orderTime(LocalDateTime.now())
-            .customerId(1)
+            .customerId(1L)
             .amount(190.00f)
             .productName("sofa")
             .quantity(5)

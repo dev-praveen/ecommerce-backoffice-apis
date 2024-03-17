@@ -23,14 +23,14 @@ public class EcommerceService {
   private final CustomerRepository customerRepository;
 
   @Transactional
-  public Integer saveCustomer(CreateCustomerRequest customerRepresentation) {
+  public Long saveCustomer(CreateCustomerRequest customerRepresentation) {
 
     final Customer customer = customerRepository.save(Customer.fromModel(customerRepresentation));
     return customer.getId();
   }
 
   @Transactional
-  public void updateCustomer(Integer customerId, CreateCustomerRequest customerRepresentation) {
+  public void updateCustomer(Long customerId, CreateCustomerRequest customerRepresentation) {
 
     final var isCustomerExist = customerRepository.existsById(customerId);
     if (!isCustomerExist) {
@@ -46,25 +46,25 @@ public class EcommerceService {
   }
 
   @Transactional
-  public Long saveOrder(Integer customerId, OrderRequest orderRequest) {
+  public Long saveOrder(Long customerId, OrderRequest orderRequest) {
 
     final var customer = findCustomer(customerId);
     final var order = Order.fromModel(orderRequest, customer);
-    return orderRepository.save(order).getOrderId();
+    return orderRepository.save(order).getId();
   }
 
-  public List<OrderRepresentation> findAllOrders(Integer customerId) {
+  public List<OrderRepresentation> findAllOrders(Long customerId) {
 
     final var customer = findCustomer(customerId);
     final var orders = orderRepository.findByCustomerId(customer.getId());
     return orders.stream().map(Order::toModel).toList();
   }
 
-  public CustomerRepresentation getCustomer(Integer customerId) {
+  public CustomerRepresentation getCustomer(Long customerId) {
     return findCustomer(customerId).toModel();
   }
 
-  private Customer findCustomer(Integer customerId) {
+  private Customer findCustomer(Long customerId) {
     final var customerOptional = customerRepository.findById(customerId);
     if (customerOptional.isEmpty()) {
       throw new CustomerNotFoundException("Customer not found in database wit id " + customerId);
@@ -73,7 +73,7 @@ public class EcommerceService {
   }
 
   @Transactional
-  public void deleteCustomer(Integer customerId) {
+  public void deleteCustomer(Long customerId) {
 
     final var customer = findCustomer(customerId);
     customerRepository.delete(customer);
