@@ -60,7 +60,7 @@ class EcommerceResourceTest {
                 put("/ecommerce/customer/{customerId}", 2)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(MockResourceData.customerJsonRequest()))
-            .andExpect(status().isAccepted());
+            .andExpect(status().isNoContent());
 
     final var response = resultActions.andReturn().getResponse();
     assertThat(response).isNotNull();
@@ -81,7 +81,7 @@ class EcommerceResourceTest {
   @Test
   void placeOrderByCustomerId() throws Exception {
 
-    when(ecommerceService.saveOrder(any(Long.class), any(OrderRequest.class))).thenReturn(1l);
+    when(ecommerceService.saveOrder(any(Long.class), any(OrderRequest.class))).thenReturn(1L);
     final var resultActions =
         mockMvc
             .perform(
@@ -116,7 +116,7 @@ class EcommerceResourceTest {
             .perform(
                 delete("/ecommerce/customer/{customerId}", 1)
                     .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+            .andExpect(status().isNoContent());
 
     verify(ecommerceService, times(1)).deleteCustomer(1L);
     assertThat(response).isNotNull();

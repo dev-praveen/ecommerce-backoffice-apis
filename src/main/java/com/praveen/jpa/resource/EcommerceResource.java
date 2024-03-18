@@ -32,7 +32,7 @@ public class EcommerceResource {
       @PathVariable Long customerId, @RequestBody CreateCustomerRequest customerRequest) {
 
     ecommerceService.updateCustomer(customerId, customerRequest);
-    return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @GetMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,7 +60,7 @@ public class EcommerceResource {
   public ResponseEntity<Void> deleteCustomer(@PathVariable Long customerId) {
 
     ecommerceService.deleteCustomer(customerId);
-    return ResponseEntity.ok().build();
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @GetMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
