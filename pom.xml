@@ -80,9 +80,6 @@
 				<version>3.3.1</version>
 				<configuration>
 					<container>
-						<ports>
-							<port>8082</port>
-						</ports>
 						<jvmFlags>
 							<jvmFlag>-Dspring.profiles.active=h2</jvmFlag>
 						</jvmFlags>
