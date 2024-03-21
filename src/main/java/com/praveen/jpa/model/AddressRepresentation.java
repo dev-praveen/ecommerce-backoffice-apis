@@ -1,5 +1,6 @@
 package com.praveen.jpa.model;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,9 @@ public class AddressRepresentation {
   private String houseNo;
   private String street;
   private String landmark;
+
+  @NotBlank(message = "pincode can not be empty")
   private String pinCode;
+
   private String city;
 }

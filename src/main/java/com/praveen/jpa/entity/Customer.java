@@ -35,7 +35,7 @@ public class Customer implements Serializable {
   private String email;
 
   @Column(name = "CONTACT_NUMBER", nullable = false)
-  private Long contactNumber;
+  private String contactNumber;
 
   @Embedded private Address address;
 

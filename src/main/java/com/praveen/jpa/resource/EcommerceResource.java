@@ -5,6 +5,7 @@ import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
 import com.praveen.jpa.model.OrderRequest;
 import com.praveen.jpa.service.EcommerceService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +22,7 @@ public class EcommerceResource {
 
   @PostMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Long> createCustomer(
-      @RequestBody CreateCustomerRequest customerRequest) {
+      @RequestBody @Valid CreateCustomerRequest customerRequest) {
 
     final Long customerId = ecommerceService.saveCustomer(customerRequest);
     return new ResponseEntity<>(customerId, HttpStatus.CREATED);

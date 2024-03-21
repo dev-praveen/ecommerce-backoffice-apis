@@ -16,7 +16,7 @@ public interface MockResourceData {
                 "firstName": "Alice",
                 "lastName": "Smith",
                 "email": "alice.smith@example.com",
-                "contactNumber": 9876543210,
+                "contactNumber": "9876543210",
                 "address": {
                     "houseNo": "456",
                     "street": "Broadway",
@@ -47,7 +47,7 @@ public interface MockResourceData {
             .email("john.deo@email.com")
             .firstName("john")
             .lastName("doe")
-            .contactNumber(9491425216L)
+            .contactNumber("9491425216")
             .orders(Collections.emptyList())
             .address(
                 AddressRepresentation.builder()
@@ -66,7 +66,7 @@ public interface MockResourceData {
             .email("john.cena@email.com")
             .firstName("john")
             .lastName("cena")
-            .contactNumber(578475847L)
+            .contactNumber("578475847")
             .orders(mockOrders)
             .address(
                 AddressRepresentation.builder()

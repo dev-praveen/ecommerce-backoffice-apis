@@ -13,7 +13,7 @@ public class CustomerRepresentation {
   private String firstName;
   private String lastName;
   private String email;
-  private Long contactNumber;
+  private String contactNumber;
   private AddressRepresentation address;
   private List<OrderRepresentation> orders;
 }

@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1710140134882-7
+      author: praveen
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - modifyDataType:
+            columnName: contact_number
+            newDataType: VARCHAR(255)
+            tableName: customers

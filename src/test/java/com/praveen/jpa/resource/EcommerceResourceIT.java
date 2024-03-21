@@ -50,7 +50,7 @@ class EcommerceResourceIT {
             .firstName("praveen")
             .lastName("sana")
             .email("spraveen@email.com")
-            .contactNumber(7406120335L)
+            .contactNumber("7406120335")
             .address(AddressRepresentation.builder().pinCode("516362").build())
             .build();
     final var response =
