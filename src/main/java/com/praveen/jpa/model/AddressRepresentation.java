@@ -16,7 +16,7 @@ public class AddressRepresentation {
   private String street;
   private String landmark;
 
-  @NotBlank(message = "pincode can not be empty")
+  @NotBlank(message = "pincode can not be blank or null")
   private String pinCode;
 
   private String city;

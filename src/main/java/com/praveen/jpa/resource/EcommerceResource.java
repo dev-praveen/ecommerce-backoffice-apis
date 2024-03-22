@@ -30,7 +30,7 @@ public class EcommerceResource {
 
   @PutMapping(value = "/customer/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Void> updateCustomer(
-      @PathVariable Long customerId, @RequestBody CreateCustomerRequest customerRequest) {
+      @PathVariable Long customerId, @RequestBody @Valid CreateCustomerRequest customerRequest) {
 
     ecommerceService.updateCustomer(customerId, customerRequest);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);

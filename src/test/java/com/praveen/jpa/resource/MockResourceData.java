@@ -28,6 +28,25 @@ public interface MockResourceData {
             """;
   }
 
+  static String invalidCustomerJsonRequest() {
+
+    return """
+            {
+                "firstName": null,
+                "lastName": "Smith",
+                "email": "alice",
+                "contactNumber": "9876543210",
+                "address": {
+                    "houseNo": "456",
+                    "street": "Broadway",
+                    "landmark": "Next to Mall",
+                    "pinCode": "",
+                    "city": "New City"
+                }
+            }
+            """;
+  }
+
   static String orderJsonRequest() {
 
     return """

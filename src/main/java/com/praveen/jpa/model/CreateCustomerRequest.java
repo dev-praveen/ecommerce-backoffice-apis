@@ -1,5 +1,6 @@
 package com.praveen.jpa.model;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCustomerRequest {
 
-  @NotBlank(message = "first name can not be blank")
+  @NotBlank(message = "first name can not be blank or null")
   private String firstName;
 
   private String lastName;
@@ -21,8 +22,8 @@ public class CreateCustomerRequest {
   @Email(message = "not a valid email format")
   private String email;
 
-  @NotBlank(message = "contact number can not be blank")
+  @NotBlank(message = "contact number can not be blank or null")
   private String contactNumber;
 
-  private AddressRepresentation address;
+  @Valid private AddressRepresentation address;
 }

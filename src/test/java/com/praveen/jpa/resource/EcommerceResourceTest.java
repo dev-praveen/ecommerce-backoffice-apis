@@ -11,6 +11,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -45,6 +48,28 @@ class EcommerceResourceTest {
     final var response = resultActions.andReturn().getResponse();
     assertThat(response).isNotNull();
     assertThat(response.getContentAsString()).isEqualTo("1");
+  }
+
+  @Test
+  void shouldThrowExceptionForInvalidCustomerRequest() throws Exception {
+
+    final var resultActions =
+        mockMvc
+            .perform(
+                post("/ecommerce/customer")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(MockResourceData.invalidCustomerJsonRequest()))
+            .andExpect(status().isBadRequest());
+
+    verify(ecommerceService, times(0)).saveCustomer(any(CreateCustomerRequest.class));
+    final var response = resultActions.andReturn().getResponse();
+    assertThat(response).isNotNull();
+    assertThat(response.getContentAsString())
+        .contains(
+            List.of(
+                "first name can not be blank or null",
+                "pincode can not be blank or null",
+                "not a valid email format"));
   }
 
   @Test
