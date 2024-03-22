@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class EcommerceResourceIT {
+class EcommerceResourceIntTest {
 
   @Container @ServiceConnection
   private static final PostgreSQLContainer<?> postgres =
