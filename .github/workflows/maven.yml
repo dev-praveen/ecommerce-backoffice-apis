@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: system info
-      run: echo "System information $(uname -a)"
+    - name: System info
+      run: echo -e "System information $(uname -a)"
     - name: Disk info
-      run: echo "Disk information $(df -h)"
+      run: echo -e "Disk information $(df -h)"
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
@@ -37,6 +37,8 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     - name: Docker build and push image to Dockerhub
       run: mvn jib:build
+    - name: Sonar Analysis
+      uses: ./run_sonar_analysis.sh
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
