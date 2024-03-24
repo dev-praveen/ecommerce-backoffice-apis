@@ -1,5 +1,6 @@
 package com.praveen.jpa.resource;
 
+import com.praveen.jpa.exception.CustomerNotFoundException;
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.OrderRequest;
 import com.praveen.jpa.service.EcommerceService;
@@ -170,6 +171,19 @@ class EcommerceResourceTest {
             .perform(
                 get("/ecommerce/customer/{customerId}", 2).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+    assertThat(response).isNotNull();
+  }
+
+  @Test
+  void shouldThrowCustomerNotFoundExceptionForGetCustomerById() throws Exception {
+
+    when(ecommerceService.getCustomer(any(Long.class))).thenThrow(CustomerNotFoundException.class);
+
+    final var response =
+        mockMvc
+            .perform(
+                get("/ecommerce/customer/{customerId}", 2).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     assertThat(response).isNotNull();
   }
 }

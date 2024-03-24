@@ -4,6 +4,8 @@ import com.praveen.jpa.model.OrderRepresentation;
 import com.praveen.jpa.model.OrderRequest;
 import lombok.*;
 import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -14,6 +16,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "ORDERS")
 public class Order implements Serializable {
+
+  @Serial private static final long serialVersionUID = -6373223943264489431L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDER_ID_GENERATOR_SEQUENCE")

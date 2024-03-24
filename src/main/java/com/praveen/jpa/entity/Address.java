@@ -6,6 +6,7 @@ import lombok.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Getter
@@ -14,7 +15,9 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class Address {
+public class Address implements Serializable {
+
+  @Serial private static final long serialVersionUID = 921947450759593088L;
 
   @Column(name = "HOUSE_NO")
   private String houseNo;

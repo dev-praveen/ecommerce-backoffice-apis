@@ -4,6 +4,8 @@ import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
 import lombok.*;
 import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "CUSTOMERS")
 public class Customer implements Serializable {
+
+  @Serial private static final long serialVersionUID = 904830748979595077L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EID_GENERATOR_SEQUENCE")
