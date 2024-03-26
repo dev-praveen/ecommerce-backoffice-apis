@@ -31,7 +31,9 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: SonarQube Scan
-      run: mvn clean verify sonar:sonar -Dsonar.token=sqp_26237eaa888805446861ad41c77df3665d80f89f
+      env:
+        SONAR_HOST_URL: https://sonarqube.loca.lt
+      run: mvn clean verify sonar:sonar -Dsonar.token=sqp_26237eaa888805446861ad41c77df3665d80f89f -Dsonar.projectKey=ecommerce-backoffice-appis
     - name: Build with Maven
       run: mvn -B clean package --file pom.xml
     - name: Login to Dockerhub
