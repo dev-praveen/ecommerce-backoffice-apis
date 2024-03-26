@@ -12,13 +12,15 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
+  private static final String TIMESTAMP = "timestamp";
+
   @ExceptionHandler(CustomerNotFoundException.class)
   public final ProblemDetail handleCustomerNotFoundException(CustomerNotFoundException e) {
 
     ProblemDetail problemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
     problemDetail.setTitle("Customer not found");
-    problemDetail.setProperty("timestamp", LocalDateTime.now());
+    problemDetail.setProperty(TIMESTAMP, LocalDateTime.now());
     return problemDetail;
   }
 
@@ -32,7 +34,7 @@ public class CustomExceptionHandler {
                     error -> ((FieldError) error).getField(), error -> error.getDefaultMessage()));
     ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
     problemDetail.setTitle("Request payload is invalid");
-    problemDetail.setProperty("timestamp", LocalDateTime.now());
+    problemDetail.setProperty(TIMESTAMP, LocalDateTime.now());
     problemDetail.setProperty("errors", errors);
     return problemDetail;
   }
@@ -43,7 +45,7 @@ public class CustomExceptionHandler {
     ProblemDetail problemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
     problemDetail.setTitle("Duplicate input request");
-    problemDetail.setProperty("timestamp", LocalDateTime.now());
+    problemDetail.setProperty(TIMESTAMP, LocalDateTime.now());
     return problemDetail;
   }
 }
