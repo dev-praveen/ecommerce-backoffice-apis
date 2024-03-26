@@ -23,7 +23,7 @@ public class CustomExceptionHandler {
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex) {
+  public final ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex) {
 
     final var errors =
         ex.getBindingResult().getAllErrors().stream()
@@ -34,6 +34,16 @@ public class CustomExceptionHandler {
     problemDetail.setTitle("Request payload is invalid");
     problemDetail.setProperty("timestamp", LocalDateTime.now());
     problemDetail.setProperty("errors", errors);
+    return problemDetail;
+  }
+
+  @ExceptionHandler(DuplicateCustomerException.class)
+  public final ProblemDetail handleDuplicateCustomerException(DuplicateCustomerException e) {
+
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+    problemDetail.setTitle("Duplicate input request");
+    problemDetail.setProperty("timestamp", LocalDateTime.now());
     return problemDetail;
   }
 }

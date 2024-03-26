@@ -5,6 +5,7 @@ import com.praveen.jpa.dao.OrderRepository;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
 import com.praveen.jpa.exception.CustomerNotFoundException;
+import com.praveen.jpa.exception.DuplicateCustomerException;
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
@@ -25,6 +26,11 @@ public class EcommerceService {
   @Transactional
   public Long saveCustomer(CreateCustomerRequest customerRepresentation) {
 
+    final var isCustomerExist = isCustomerAlreadyExists(customerRepresentation);
+    if (isCustomerExist) {
+      throw new DuplicateCustomerException(
+          "Found another customer with same details in database, please try with different first name, email, contact number");
+    }
     final Customer customer = customerRepository.save(Customer.fromModel(customerRepresentation));
     return customer.getId();
   }
@@ -82,5 +88,13 @@ public class EcommerceService {
   public List<OrderRepresentation> fetchAllOrders() {
 
     return orderRepository.findAll().stream().map(Order::toModel).toList();
+  }
+
+  private boolean isCustomerAlreadyExists(CreateCustomerRequest customerRequest) {
+
+    return customerRepository.existsBy(
+        customerRequest.getFirstName(),
+        customerRequest.getEmail(),
+        customerRequest.getContactNumber());
   }
 }
