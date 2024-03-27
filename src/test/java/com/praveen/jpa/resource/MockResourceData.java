@@ -1,6 +1,7 @@
 package com.praveen.jpa.resource;
 
 import com.praveen.jpa.model.AddressRepresentation;
+import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
 import java.time.LocalDateTime;
@@ -11,7 +12,8 @@ public interface MockResourceData {
 
   static String customerJsonRequest() {
 
-    return """
+    return
+    """
             {
                 "firstName": "Alice",
                 "lastName": "Smith",
@@ -30,7 +32,8 @@ public interface MockResourceData {
 
   static String invalidCustomerJsonRequest() {
 
-    return """
+    return
+    """
             {
                 "firstName": null,
                 "lastName": "Smith",
@@ -49,7 +52,8 @@ public interface MockResourceData {
 
   static String orderJsonRequest() {
 
-    return """
+    return
+    """
             {
               "productName": "tiles",
               "quantity": 200,
@@ -122,5 +126,16 @@ public interface MockResourceData {
             .build();
 
     return List.of(order1, order2);
+  }
+
+  static CreateCustomerRequest getCustomerRequest() {
+
+    return CreateCustomerRequest.builder()
+        .firstName("praveen")
+        .lastName("sana")
+        .email("spraveen@email.com")
+        .contactNumber("9848022338")
+        .address(AddressRepresentation.builder().pinCode("600032").build())
+        .build();
   }
 }

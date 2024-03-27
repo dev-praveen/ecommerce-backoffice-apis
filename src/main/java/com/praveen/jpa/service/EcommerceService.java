@@ -38,12 +38,8 @@ public class EcommerceService {
   @Transactional
   public void updateCustomer(Long customerId, CreateCustomerRequest customerRepresentation) {
 
-    final var isCustomerExist = customerRepository.existsById(customerId);
-    if (!isCustomerExist) {
-      throw new CustomerNotFoundException(
-          "Customer does not exist in the database with id: " + customerId);
-    }
-    customerRepository.save(Customer.fromModel(customerRepresentation));
+    final var customer = findCustomer(customerId);
+    customerRepository.save(Customer.updateModel(customer, customerRepresentation));
   }
 
   public List<CustomerRepresentation> findAllCustomers() {
@@ -73,7 +69,7 @@ public class EcommerceService {
   private Customer findCustomer(Long customerId) {
     final var customerOptional = customerRepository.findById(customerId);
     if (customerOptional.isEmpty()) {
-      throw new CustomerNotFoundException("Customer not found in database wit id " + customerId);
+      throw new CustomerNotFoundException("Customer not found in database with id " + customerId);
     }
     return customerOptional.get();
   }

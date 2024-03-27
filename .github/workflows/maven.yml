@@ -30,11 +30,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: SonarQube Scan
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      run: mvn clean verify sonar:sonar -Dsonar.projectKey=ecommerce-backoffice-apis
     - name: Build with Maven
       run: mvn -B clean package --file pom.xml
     - name: Login to Dockerhub

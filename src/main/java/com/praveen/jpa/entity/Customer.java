@@ -49,6 +49,18 @@ public class Customer implements Serializable {
   public static Customer fromModel(CreateCustomerRequest customerRepresentation) {
 
     final Customer customer = new Customer();
+    return populateCustomerRequestData(customer, customerRepresentation);
+  }
+
+  public static Customer updateModel(
+      Customer customer, CreateCustomerRequest customerRepresentation) {
+
+    return populateCustomerRequestData(customer, customerRepresentation);
+  }
+
+  private static Customer populateCustomerRequestData(
+      Customer customer, CreateCustomerRequest customerRepresentation) {
+
     customer.setEmail(customerRepresentation.getEmail());
     customer.setFirstName(customerRepresentation.getFirstName());
     customer.setLastName(customerRepresentation.getLastName());
@@ -61,8 +73,8 @@ public class Customer implements Serializable {
   public void setOrders(List<Order> orders) {
     if (null != orders) {
       orders.forEach(order -> order.setCustomer(this));
+      this.getOrders().addAll(orders);
     }
-    this.orders = orders;
   }
 
   public CustomerRepresentation toModel() {
