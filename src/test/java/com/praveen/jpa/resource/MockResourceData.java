@@ -1,9 +1,7 @@
 package com.praveen.jpa.resource;
 
-import com.praveen.jpa.model.AddressRepresentation;
-import com.praveen.jpa.model.CreateCustomerRequest;
-import com.praveen.jpa.model.CustomerRepresentation;
-import com.praveen.jpa.model.OrderRepresentation;
+import com.praveen.jpa.model.*;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -137,5 +135,10 @@ public interface MockResourceData {
         .contactNumber("9848022338")
         .address(AddressRepresentation.builder().pinCode("600032").build())
         .build();
+  }
+
+  static OrderRequest getOrderRequest() {
+
+    return OrderRequest.builder().amount(122.89f).productName("cooler").quantity(2).build();
   }
 }
