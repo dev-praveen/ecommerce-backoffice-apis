@@ -14,7 +14,10 @@
     <name>ecommerce-backoffice-appis</name>
     <description>Demo project for ecommerce backoffice application</description>
     <properties>
-        <sonar.exclusions>com.praveen.jpa.model.*</sonar.exclusions>
+        <sonar.exclusions>
+            "**/EcommerceBackofficeApplication.java",
+            **/model/*.java
+        </sonar.exclusions>
         <java.version>17</java.version>
     </properties>
     <dependencies>
