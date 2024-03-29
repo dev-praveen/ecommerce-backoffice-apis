@@ -31,14 +31,10 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: SonarCloud Scan
-      run: mvn -B verify sonar:sonar
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-        args:
-          -Dsonar.organization=sonar-cloud-scanner
-          -Dsonar.projectKey=dev-praveen_ecommerce-backoffice-apis
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=dev-praveen_ecommerce-backoffice-apis
     - name: Build with Maven
       run: mvn -B clean package --file pom.xml
     - name: Login to Dockerhub
