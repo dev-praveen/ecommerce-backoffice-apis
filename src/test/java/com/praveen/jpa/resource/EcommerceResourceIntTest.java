@@ -1,6 +1,7 @@
 package com.praveen.jpa.resource;
 
 import com.praveen.jpa.dao.CustomerRepository;
+import com.praveen.jpa.dao.OrderRepository;
 import com.praveen.jpa.entity.Address;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
@@ -35,6 +36,7 @@ class EcommerceResourceIntTest {
       new PostgreSQLContainer<>("postgres:15-alpine");
 
   @Autowired CustomerRepository customerRepository;
+  @Autowired OrderRepository orderRepository;
   @LocalServerPort private Integer port;
   private RestClient restClient;
 
@@ -242,6 +244,16 @@ class EcommerceResourceIntTest {
       assertThat(message).contains("Customer not found in database with id 12");
       assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+  }
+
+  @Test
+  void shouldReturnTrueIfMoreThanOneCustomerExists() {
+
+    final var customer = createCustomer();
+    final var exists = customerRepository.existsBy("praveen", "spraveen@email.com", "9848022338");
+    final var orders = orderRepository.findByCustomerId(customer.getId());
+    assertThat(orders).hasSize(2);
+    assertThat(exists).isTrue();
   }
 
   private void insertCustomersIntoDatabase() {
