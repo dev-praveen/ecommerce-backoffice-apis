@@ -30,6 +30,15 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args:
+          -Dsonar.organization=sonar-cloud-scanner
+          -Dsonar.projectKey=dev-praveen_ecommerce-backoffice-apis
     - name: Build with Maven
       run: mvn -B clean package --file pom.xml
     - name: Login to Dockerhub
