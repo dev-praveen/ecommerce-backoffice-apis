@@ -68,4 +68,21 @@ public class Order implements Serializable {
         .customerId(customer.getId())
         .build();
   }
+
+  @Override
+  public String toString() {
+    return "Order{"
+        + "id="
+        + id
+        + ", productName='"
+        + productName
+        + '\''
+        + ", quantity="
+        + quantity
+        + ", amount="
+        + amount
+        + ", orderTime="
+        + orderTime
+        + '}';
+  }
 }

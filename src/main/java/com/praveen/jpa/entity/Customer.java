@@ -89,4 +89,26 @@ public class Customer implements Serializable {
         .orders(orders.stream().map(Order::toModel).toList())
         .build();
   }
+
+  @Override
+  public String toString() {
+    return "Customer{"
+        + "id="
+        + id
+        + ", firstName='"
+        + firstName
+        + '\''
+        + ", lastName='"
+        + lastName
+        + '\''
+        + ", email='"
+        + email
+        + '\''
+        + ", contactNumber='"
+        + contactNumber
+        + '\''
+        + ", address="
+        + address
+        + '}';
+  }
 }
