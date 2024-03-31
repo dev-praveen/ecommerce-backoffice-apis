@@ -256,6 +256,28 @@ class EcommerceResourceIntTest {
     assertThat(exists).isTrue();
   }
 
+  @Test
+  void shouldUpdateAddressForCustomer() {
+
+    final var customer = createCustomer();
+    final var response =
+        restClient
+            .put()
+            .uri("/customer/address/{customerId}", customer.getId())
+            .body(MockResourceData.getAddressRequest())
+            .retrieve()
+            .toEntity(Void.class);
+
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    final var optionalCustomer = customerRepository.findById(customer.getId());
+    if (optionalCustomer.isPresent()) {
+      final var address = optionalCustomer.get().getAddress();
+      assertThat(address).isNotNull();
+      assertThat(address.getCity()).isNotEqualTo("khansar");
+      assertThat(address.getCity()).isEqualTo("baroda");
+    }
+  }
+
   private void insertCustomersIntoDatabase() {
 
     final var customer1 = new Customer();
@@ -285,6 +307,10 @@ class EcommerceResourceIntTest {
     final var customer = new Customer();
     final var address = new Address();
     address.setPinCode("600032");
+    address.setCity("khansar");
+    address.setLandmark("Dharavi");
+    address.setHouseNo("#1-199/A");
+    address.setStreet("gandhi road");
     customer.setFirstName("praveen");
     customer.setEmail("spraveen@email.com");
     customer.setAddress(address);

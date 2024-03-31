@@ -141,4 +141,15 @@ public interface MockResourceData {
 
     return OrderRequest.builder().amount(122.89f).productName("cooler").quantity(2).build();
   }
+
+  static AddressRepresentation getAddressRequest() {
+
+    return AddressRepresentation.builder()
+        .street("kk colony")
+        .pinCode("300632")
+        .landmark("near temple")
+        .city("baroda")
+        .houseNo("#19-09/A")
+        .build();
+  }
 }

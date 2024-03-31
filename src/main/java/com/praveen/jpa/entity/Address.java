@@ -48,13 +48,26 @@ public class Address implements Serializable {
   public static Address fromModel(AddressRepresentation addressRepresentation) {
 
     final var address = new Address();
+    populateAddressData(address, addressRepresentation);
+    return address;
+  }
+
+  public static Address updateModel(
+      Customer customer, AddressRepresentation addressRepresentation) {
+
+    final var address = customer.getAddress();
+    populateAddressData(address, addressRepresentation);
+    return address;
+  }
+
+  private static void populateAddressData(
+      Address address, AddressRepresentation addressRepresentation) {
 
     address.setStreet(addressRepresentation.getStreet());
     address.setPinCode(addressRepresentation.getPinCode());
     address.setLandmark(addressRepresentation.getLandmark());
     address.setCity(addressRepresentation.getCity());
     address.setHouseNo(addressRepresentation.getHouseNo());
-    return address;
   }
 
   public AddressRepresentation toModel() {

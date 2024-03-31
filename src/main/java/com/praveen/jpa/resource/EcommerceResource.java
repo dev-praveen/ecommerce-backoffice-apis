@@ -1,9 +1,6 @@
 package com.praveen.jpa.resource;
 
-import com.praveen.jpa.model.CreateCustomerRequest;
-import com.praveen.jpa.model.CustomerRepresentation;
-import com.praveen.jpa.model.OrderRepresentation;
-import com.praveen.jpa.model.OrderRequest;
+import com.praveen.jpa.model.*;
 import com.praveen.jpa.service.EcommerceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -76,5 +73,13 @@ public class EcommerceResource {
 
     final var customer = ecommerceService.getCustomer(customerId);
     return ResponseEntity.ok(customer);
+  }
+
+  @PutMapping(value = "/customer/address/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Void> updateAddress(
+      @PathVariable Long customerId, @RequestBody AddressRepresentation addressRequest) {
+
+    ecommerceService.updateCustomerAddress(customerId, addressRequest);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

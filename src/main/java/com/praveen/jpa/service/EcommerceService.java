@@ -1,15 +1,14 @@
 package com.praveen.jpa.service;
 
+import com.praveen.jpa.dao.AddressRepository;
 import com.praveen.jpa.dao.CustomerRepository;
 import com.praveen.jpa.dao.OrderRepository;
+import com.praveen.jpa.entity.Address;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
 import com.praveen.jpa.exception.CustomerNotFoundException;
 import com.praveen.jpa.exception.DuplicateCustomerException;
-import com.praveen.jpa.model.CreateCustomerRequest;
-import com.praveen.jpa.model.CustomerRepresentation;
-import com.praveen.jpa.model.OrderRepresentation;
-import com.praveen.jpa.model.OrderRequest;
+import com.praveen.jpa.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +21,7 @@ public class EcommerceService {
 
   private final OrderRepository orderRepository;
   private final CustomerRepository customerRepository;
+  private final AddressRepository addressRepository;
 
   @Transactional
   public Long saveCustomer(CreateCustomerRequest customerRepresentation) {
@@ -92,5 +92,13 @@ public class EcommerceService {
         customerRequest.getFirstName(),
         customerRequest.getEmail(),
         customerRequest.getContactNumber());
+  }
+
+  @Transactional
+  public void updateCustomerAddress(Long customerId, AddressRepresentation addressRequest) {
+
+    final var customer = findCustomer(customerId);
+    final var address = Address.updateModel(customer, addressRequest);
+    addressRepository.save(address);
   }
 }
