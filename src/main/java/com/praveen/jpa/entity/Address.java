@@ -1,24 +1,30 @@
 package com.praveen.jpa.entity;
 
 import com.praveen.jpa.model.AddressRepresentation;
+import jakarta.persistence.*;
 import lombok.*;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-
 import java.io.Serial;
 import java.io.Serializable;
 
 @Getter
 @Setter
-@Builder
-@ToString
-@Embeddable
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "ADDRESS")
+@ToString(exclude = {"customer"})
 public class Address implements Serializable {
 
-  @Serial private static final long serialVersionUID = 921947450759593088L;
+  @Serial private static final long serialVersionUID = -6530186249441534714L;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AID_GENERATOR_SEQUENCE")
+  @SequenceGenerator(
+      name = "AID_GENERATOR_SEQUENCE",
+      sequenceName = "AID_GENERATOR_SEQUENCE",
+      initialValue = 20000,
+      allocationSize = 1)
+  private Long id;
 
   @Column(name = "HOUSE_NO")
   private String houseNo;
@@ -35,15 +41,20 @@ public class Address implements Serializable {
   @Column(name = "CITY")
   private String city;
 
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "customer_id")
+  private Customer customer;
+
   public static Address fromModel(AddressRepresentation addressRepresentation) {
 
-    return Address.builder()
-        .street(addressRepresentation.getStreet())
-        .pinCode(addressRepresentation.getPinCode())
-        .landmark(addressRepresentation.getLandmark())
-        .city(addressRepresentation.getCity())
-        .houseNo(addressRepresentation.getHouseNo())
-        .build();
+    final var address = new Address();
+
+    address.setStreet(addressRepresentation.getStreet());
+    address.setPinCode(addressRepresentation.getPinCode());
+    address.setLandmark(addressRepresentation.getLandmark());
+    address.setCity(addressRepresentation.getCity());
+    address.setHouseNo(addressRepresentation.getHouseNo());
+    return address;
   }
 
   public AddressRepresentation toModel() {

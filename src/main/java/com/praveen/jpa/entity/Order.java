@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ORDERS")
+@ToString(exclude = {"customer"})
 public class Order implements Serializable {
 
   @Serial private static final long serialVersionUID = -6373223943264489431L;
@@ -67,22 +68,5 @@ public class Order implements Serializable {
         .orderTime(orderTime)
         .customerId(customer.getId())
         .build();
-  }
-
-  @Override
-  public String toString() {
-    return "Order{"
-        + "id="
-        + id
-        + ", productName='"
-        + productName
-        + '\''
-        + ", quantity="
-        + quantity
-        + ", amount="
-        + amount
-        + ", orderTime="
-        + orderTime
-        + '}';
   }
 }

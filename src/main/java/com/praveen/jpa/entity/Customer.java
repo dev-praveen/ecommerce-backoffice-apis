@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "CUSTOMERS")
+@ToString(exclude = {"orders", "address"})
 public class Customer implements Serializable {
 
   @Serial private static final long serialVersionUID = 904830748979595077L;
@@ -41,7 +42,8 @@ public class Customer implements Serializable {
   @Column(name = "CONTACT_NUMBER", nullable = false)
   private String contactNumber;
 
-  @Embedded private Address address;
+  @OneToOne(mappedBy = "customer", orphanRemoval = true, cascade = CascadeType.ALL)
+  private Address address;
 
   @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Order> orders = new ArrayList<>();
@@ -70,6 +72,11 @@ public class Customer implements Serializable {
     return customer;
   }
 
+  public void setAddress(Address address) {
+    address.setCustomer(this);
+    this.address = address;
+  }
+
   public void setOrders(List<Order> orders) {
     if (null != orders) {
       orders.forEach(order -> order.setCustomer(this));
@@ -88,27 +95,5 @@ public class Customer implements Serializable {
         .address(address.toModel())
         .orders(orders.stream().map(Order::toModel).toList())
         .build();
-  }
-
-  @Override
-  public String toString() {
-    return "Customer{"
-        + "id="
-        + id
-        + ", firstName='"
-        + firstName
-        + '\''
-        + ", lastName='"
-        + lastName
-        + '\''
-        + ", email='"
-        + email
-        + '\''
-        + ", contactNumber='"
-        + contactNumber
-        + '\''
-        + ", address="
-        + address
-        + '}';
   }
 }

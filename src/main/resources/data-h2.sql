@@ -1,32 +1,58 @@
-
+-- Inserting into ecommerce.customers table
 insert into ecommerce.customers 
-    (city, house_no, landmark, pin_code, street, contact_number, email, first_name, last_name, id) 
+    (contact_number, email, first_name, last_name, id) 
 values 
-    ('New York', '123', 'Central Park', '10001', 'Broadway', '+1234567890', 'john.doe@example.com', 'John', 'Doe', nextval('ecommerce.eid_generator_sequence'));
-
-
-insert into ecommerce.customers 
-    (city, house_no, landmark, pin_code, street, contact_number, email, first_name, last_name, id) 
-values 
-    ('Los Angeles', '456', 'Hollywood Blvd', '90001', 'Sunset Blvd', '+1987654321', 'jane.doe@example.com', 'Jane', 'Doe', nextval('ecommerce.eid_generator_sequence'));
+    ('+1234567890', 'john.doe@example.com', 'John', 'Doe', nextval('ecommerce.eid_generator_sequence'));
 
 
 insert into ecommerce.customers 
-    (city, house_no, landmark, pin_code, street, contact_number, email, first_name, last_name, id) 
+    (contact_number, email, first_name, last_name, id) 
 values 
-    ('Chicago', '789', 'Millennium Park', '60601', 'Michigan Ave', '+1122334455', 'michael.smith@example.com', 'Michael', 'Smith', nextval('ecommerce.eid_generator_sequence'));
+    ('+1987654321', 'jane.doe@example.com', 'Jane', 'Doe', nextval('ecommerce.eid_generator_sequence'));
 
 
 insert into ecommerce.customers 
-    (city, house_no, landmark, pin_code, street, contact_number, email, first_name, last_name, id) 
+    (contact_number, email, first_name, last_name, id) 
 values 
-    ('San Francisco', '987', 'Golden Gate Bridge', '94102', 'Lombard St', '+1555666777', 'sarah.johnson@example.com', 'Sarah', 'Johnson', nextval('ecommerce.eid_generator_sequence'));
+    ('+1122334455', 'michael.smith@example.com', 'Michael', 'Smith', nextval('ecommerce.eid_generator_sequence'));
 
 
 insert into ecommerce.customers 
-    (city, house_no, landmark, pin_code, street, contact_number, email, first_name, last_name, id) 
+    (contact_number, email, first_name, last_name, id) 
 values 
-    ('London', '10', 'Hyde Park', 'W1J 7BX', 'Oxford St', '+447700900000', 'james.wilson@example.com', 'James', 'Wilson', nextval('ecommerce.eid_generator_sequence'));
+    ('+1555666777', 'sarah.johnson@example.com', 'Sarah', 'Johnson', nextval('ecommerce.eid_generator_sequence'));
+
+
+insert into ecommerce.customers 
+    (contact_number, email, first_name, last_name, id) 
+values 
+    ('+447700900000', 'james.wilson@example.com', 'James', 'Wilson', nextval('ecommerce.eid_generator_sequence'));
+
+-- Inserting into ecommerce.address table
+INSERT INTO ecommerce.address
+    (city, house_no, landmark, pin_code, street, id, customer_id)
+VALUES
+    ('New York', '123', 'Central Park', '10001', 'Broadway', nextval('ecommerce.aid_generator_sequence'), 165850);
+
+INSERT INTO ecommerce.address
+    (city, house_no, landmark, pin_code, street, id, customer_id)
+VALUES
+    ('Los Angeles', '456', 'Hollywood Blvd', '90001', 'Sunset Blvd', nextval('ecommerce.aid_generator_sequence'), 165851);
+
+INSERT INTO ecommerce.address
+    (city, house_no, landmark, pin_code, street, id, customer_id)
+VALUES
+    ('Chicago', '789', 'Millennium Park', '60601', 'Michigan Ave', nextval('ecommerce.aid_generator_sequence'), 165852);
+
+INSERT INTO ecommerce.address
+    (city, house_no, landmark, pin_code, street, id, customer_id)
+VALUES
+    ('San Francisco', '987', 'Golden Gate Bridge', '94102', 'Lombard St', nextval('ecommerce.aid_generator_sequence'), 165853);
+
+INSERT INTO ecommerce.address
+    (city, house_no, landmark, pin_code, street, id, customer_id)
+VALUES
+    ('London', '10', 'Hyde Park', 'W1J 7BX', 'Oxford St', nextval('ecommerce.aid_generator_sequence'), 165854);
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (

@@ -1,0 +1,90 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  1710140134882-8
+       author:  praveen
+       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+       changes:
+         -  dropColumn:
+              columns:
+                - column:
+                    name: house_no
+                - column:
+                    name: street
+                - column:
+                    name: landmark
+                - column:
+                    name: pin_code
+                - column:
+                    name: city
+              tableName:  customers
+  - changeSet:
+      id: 1710140134882-9
+      author: praveen
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            sequenceName: aid_generator_sequence
+            startValue: 20000
+            incrementBy: 1
+            ifNotExists: true
+
+  - changeSet:
+      id: 1710140134882-10
+      author: praveen
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            tableName: address
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: house_no
+                  type: VARCHAR(255)
+              - column:
+                  name: street
+                  type: VARCHAR(255)
+              - column:
+                  name: landmark
+                  type: VARCHAR(255)
+              - column:
+                  name: pin_code
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: customer_id
+                  type: BIGINT
+            constraints:
+              primaryKey:
+                columnNames:
+                  - id
+
+  - changeSet:
+      id: 1710140134882-11
+      author: praveen
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            constraintName: uc_address_customer
+            tableName: address
+            columnNames: customer_id
+
+  - changeSet:
+      id: 1710140134882-12
+      author: praveen
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: address
+            baseColumnNames: customer_id
+            constraintName: fk_address_on_customer
+            referencedTableName: customers
+            referencedColumnNames: id
