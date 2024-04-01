@@ -82,4 +82,11 @@ public class EcommerceResource {
     ecommerceService.updateCustomerAddress(customerId, addressRequest);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
+
+  @GetMapping(value = "/customersInfo", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<CustomerInfo>> getAllCustomersInfo() {
+
+    final var customers = ecommerceService.fetchAllCustomersInfo();
+    return ResponseEntity.ok(customers);
+  }
 }

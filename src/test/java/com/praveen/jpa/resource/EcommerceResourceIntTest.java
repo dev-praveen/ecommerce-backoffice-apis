@@ -5,6 +5,7 @@ import com.praveen.jpa.dao.OrderRepository;
 import com.praveen.jpa.entity.Address;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
+import com.praveen.jpa.model.CustomerInfo;
 import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
 import org.junit.jupiter.api.BeforeEach;
@@ -278,6 +279,21 @@ class EcommerceResourceIntTest {
     }
   }
 
+  @Test
+  void shouldFetchOnlyCustomersInfo() {
+
+    insertCustomersIntoDatabase();
+    final var response =
+        restClient
+            .get()
+            .uri("/customersInfo")
+            .retrieve()
+            .toEntity(new ParameterizedTypeReference<List<CustomerInfo>>() {});
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(response).isNotNull();
+    assertThat(response.getBody()).hasSize(2);
+  }
+
   private void insertCustomersIntoDatabase() {
 
     final var customer1 = new Customer();
@@ -285,6 +301,7 @@ class EcommerceResourceIntTest {
 
     address1.setPinCode("4376437");
     customer1.setFirstName("rana");
+    customer1.setLastName("naidu");
     customer1.setEmail("rana@email.com");
     customer1.setAddress(address1);
     customer1.setContactNumber("7647326427");
@@ -294,6 +311,7 @@ class EcommerceResourceIntTest {
     final var address2 = new Address();
     address2.setPinCode("090889");
     customer2.setFirstName("mahesh");
+    customer2.setLastName("babu");
     customer2.setEmail("mahesh@email.com");
     customer2.setAddress(address2);
     customer2.setContactNumber("111222");

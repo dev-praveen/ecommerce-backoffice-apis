@@ -101,4 +101,8 @@ public class EcommerceService {
     final var address = Address.updateModel(customer, addressRequest);
     addressRepository.save(address);
   }
+
+  public List<CustomerInfo> fetchAllCustomersInfo() {
+    return customerRepository.fetchAllCustomersInfo();
+  }
 }
