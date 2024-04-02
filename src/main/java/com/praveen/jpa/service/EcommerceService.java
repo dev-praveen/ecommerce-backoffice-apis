@@ -67,6 +67,7 @@ public class EcommerceService {
   }
 
   private Customer findCustomer(Long customerId) {
+
     final var customerOptional = customerRepository.findById(customerId);
     if (customerOptional.isEmpty()) {
       throw new CustomerNotFoundException("Customer not found in database with id " + customerId);
@@ -103,6 +104,7 @@ public class EcommerceService {
   }
 
   public List<CustomerInfo> fetchAllCustomersInfo() {
+
     return customerRepository.fetchAllCustomersInfo();
   }
 }

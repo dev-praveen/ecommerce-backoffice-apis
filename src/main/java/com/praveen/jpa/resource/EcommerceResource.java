@@ -50,6 +50,7 @@ public class EcommerceResource {
 
   @GetMapping(value = "/orders/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<OrderRepresentation>> getOrders(@PathVariable Long customerId) {
+
     final List<OrderRepresentation> allOrders = ecommerceService.findAllOrders(customerId);
     return ResponseEntity.ok(allOrders);
   }
