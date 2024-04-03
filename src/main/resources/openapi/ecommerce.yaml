@@ -50,8 +50,8 @@ paths:
               $ref: '#/components/schemas/CreateCustomerRequest'
         required: true
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
     delete:
       tags:
         - ecommerce-resource
@@ -64,8 +64,8 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
   /ecommerce/customer/address/{customerId}:
     put:
       tags:
@@ -85,8 +85,8 @@ paths:
               $ref: '#/components/schemas/AddressRepresentation'
         required: true
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
   /ecommerce/placeOrder/{customerId}:
     post:
       tags:
@@ -106,8 +106,8 @@ paths:
               $ref: '#/components/schemas/OrderRequest'
         required: true
       responses:
-        '200':
-          description: OK
+        '201':
+          description: Created
           content:
             application/json:
               schema:
@@ -125,8 +125,8 @@ paths:
               $ref: '#/components/schemas/CreateCustomerRequest'
         required: true
       responses:
-        '200':
-          description: OK
+        '201':
+          description: Created
           content:
             application/json:
               schema:

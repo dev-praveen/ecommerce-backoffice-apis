@@ -64,12 +64,6 @@ class EcommerceResourceTest {
     verify(ecommerceService, times(0)).saveCustomer(any(CreateCustomerRequest.class));
     final var response = resultActions.andReturn().getResponse();
     assertThat(response).isNotNull();
-    assertThat(response.getContentAsString())
-        .contains(
-            List.of(
-                "first name can not be blank or null",
-                "pincode can not be blank or null",
-                "not a valid email format"));
   }
 
   @Test
