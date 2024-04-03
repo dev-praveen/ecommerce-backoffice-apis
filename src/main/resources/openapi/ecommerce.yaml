@@ -63,6 +63,27 @@ paths:
       responses:
         '200':
           description: "OK"
+  "/ecommerce/customer/address/{customerId}":
+    put:
+      tags:
+        - "ecommerce-resource"
+      operationId: "updateAddress"
+      parameters:
+        - name: "customerId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddressRepresentation"
+        required: true
+      responses:
+        '200':
+          description: "OK"
   "/ecommerce/placeOrder/{customerId}":
     post:
       tags:
@@ -85,7 +106,7 @@ paths:
         '200':
           description: "OK"
           content:
-            "*/*":
+            application/json:
               schema:
                 type: "integer"
                 format: "int64"
@@ -104,7 +125,7 @@ paths:
         '200':
           description: "OK"
           content:
-            "*/*":
+            application/json:
               schema:
                 type: "integer"
                 format: "int64"
@@ -192,6 +213,7 @@ components:
       required:
         - "contactNumber"
         - "firstName"
+        - "email"
       type: "object"
       properties:
         firstName:
@@ -200,6 +222,7 @@ components:
           type: "string"
         email:
           type: "string"
+          format: email
         contactNumber:
           type: "string"
         address:

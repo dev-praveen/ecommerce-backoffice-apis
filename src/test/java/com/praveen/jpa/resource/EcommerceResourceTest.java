@@ -1,5 +1,6 @@
 package com.praveen.jpa.resource;
 
+import com.praveen.jpa.api.EcommerceApi;
 import com.praveen.jpa.exception.CustomerNotFoundException;
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.OrderRequest;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(value = EcommerceResource.class)
+@WebMvcTest(value = EcommerceApi.class)
 class EcommerceResourceTest {
 
   @Autowired private MockMvc mockMvc;
