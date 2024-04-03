@@ -1,294 +1,297 @@
 openapi: 3.0.3
 info:
-  title: "E-Commerce API"
+  title: E-Commerce API
   description: |-
-    The E-Commerce API provides endpoints to manage customers, orders, and products in an e-commerce system. It allows clients to retrieve customer information, place orders, manage customer accounts, and retrieve order details. This API enables seamless integration with e-commerce applications and facilitates efficient management of customer data and orders.
-  version: "v0"
+    The E-Commerce API provides endpoints to manage customers, orders in an e-commerce system. It allows clients to retrieve customer information, place orders, manage customer accounts, and retrieve order details.
+  version: v1
 servers:
-  - url: "http://localhost:8080"
-    description: "Generated server url"
+  - url: http://localhost:8080
+    description: local swagger URL
+tags:
+  - name: ecommerce-resource
+    description: ecommerce-resource to manage customers, orders
 paths:
-  "/ecommerce/customer/{customerId}":
+  /ecommerce/customer/{customerId}:
     get:
       tags:
-        - "ecommerce-resource"
-      summary: "Finds customer details"
-      description: "Finds customer details by customer id"
-      operationId: "getCustomer"
+        - ecommerce-resource
+      summary: Finds customer details
+      description: Finds customer details by customer id
+      operationId: getCustomer
       parameters:
-        - name: "customerId"
-          in: "path"
+        - name: customerId
+          in: path
           required: true
           schema:
-            type: "integer"
-            format: "int64"
+            type: integer
+            format: int64
       responses:
         '200':
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CustomerRepresentation"
+                $ref: '#/components/schemas/CustomerRepresentation'
     put:
       tags:
-        - "ecommerce-resource"
-      operationId: "updateCustomer"
+        - ecommerce-resource
+      operationId: updateCustomer
       parameters:
-        - name: "customerId"
-          in: "path"
+        - name: customerId
+          in: path
           required: true
           schema:
-            type: "integer"
-            format: "int64"
+            type: integer
+            format: int64
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateCustomerRequest"
+              $ref: '#/components/schemas/CreateCustomerRequest'
         required: true
       responses:
         '200':
-          description: "OK"
+          description: OK
     delete:
       tags:
-        - "ecommerce-resource"
-      operationId: "deleteCustomer"
+        - ecommerce-resource
+      operationId: deleteCustomer
       parameters:
-        - name: "customerId"
-          in: "path"
+        - name: customerId
+          in: path
           required: true
           schema:
-            type: "integer"
-            format: "int64"
+            type: integer
+            format: int64
       responses:
         '200':
-          description: "OK"
-  "/ecommerce/customer/address/{customerId}":
+          description: OK
+  /ecommerce/customer/address/{customerId}:
     put:
       tags:
-        - "ecommerce-resource"
-      operationId: "updateAddress"
+        - ecommerce-resource
+      operationId: updateAddress
       parameters:
-        - name: "customerId"
-          in: "path"
+        - name: customerId
+          in: path
           required: true
           schema:
-            type: "integer"
-            format: "int64"
+            type: integer
+            format: int64
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AddressRepresentation"
+              $ref: '#/components/schemas/AddressRepresentation'
         required: true
       responses:
         '200':
-          description: "OK"
-  "/ecommerce/placeOrder/{customerId}":
+          description: OK
+  /ecommerce/placeOrder/{customerId}:
     post:
       tags:
-        - "ecommerce-resource"
-      operationId: "placeOrderByCustomerId"
+        - ecommerce-resource
+      operationId: placeOrderByCustomerId
       parameters:
-        - name: "customerId"
-          in: "path"
+        - name: customerId
+          in: path
           required: true
           schema:
-            type: "integer"
-            format: "int64"
+            type: integer
+            format: int64
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/OrderRequest"
+              $ref: '#/components/schemas/OrderRequest'
         required: true
       responses:
         '200':
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                type: "integer"
-                format: "int64"
-  "/ecommerce/customer":
+                type: integer
+                format: int64
+  /ecommerce/customer:
     post:
       tags:
-        - "ecommerce-resource"
-      operationId: "createCustomer"
+        - ecommerce-resource
+      operationId: createCustomer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateCustomerRequest"
+              $ref: '#/components/schemas/CreateCustomerRequest'
         required: true
       responses:
         '200':
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                type: "integer"
-                format: "int64"
-  "/ecommerce/orders":
+                type: integer
+                format: int64
+  /ecommerce/orders:
     get:
       tags:
-        - "ecommerce-resource"
-      operationId: "fetchOrders"
+        - ecommerce-resource
+      operationId: fetchOrders
       responses:
         '200':
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                type: "array"
+                type: array
                 items:
-                  $ref: "#/components/schemas/OrderRepresentation"
-  "/ecommerce/orders/{customerId}":
+                  $ref: '#/components/schemas/OrderRepresentation'
+  /ecommerce/orders/{customerId}:
     get:
       tags:
-        - "ecommerce-resource"
-      operationId: "getOrders"
+        - ecommerce-resource
+      operationId: getOrders
       parameters:
-        - name: "customerId"
-          in: "path"
+        - name: customerId
+          in: path
           required: true
           schema:
-            type: "integer"
-            format: "int64"
+            type: integer
+            format: int64
       responses:
         '200':
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                type: "array"
+                type: array
                 items:
-                  $ref: "#/components/schemas/OrderRepresentation"
-  "/ecommerce/customers":
+                  $ref: '#/components/schemas/OrderRepresentation'
+  /ecommerce/customers:
     get:
       tags:
-        - "ecommerce-resource"
-      operationId: "getAllCustomers"
+        - ecommerce-resource
+      operationId: getAllCustomers
       responses:
         '200':
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                type: "array"
+                type: array
                 items:
-                  $ref: "#/components/schemas/CustomerRepresentation"
-  "/ecommerce/customersInfo":
+                  $ref: '#/components/schemas/CustomerRepresentation'
+  /ecommerce/customersInfo:
     get:
       tags:
-        - "ecommerce-resource"
-      operationId: "getAllCustomersInfo"
+        - ecommerce-resource
+      operationId: getAllCustomersInfo
       responses:
         '200':
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                type: "array"
+                type: array
                 items:
-                  $ref: "#/components/schemas/CustomerInfo"
+                  $ref: '#/components/schemas/CustomerInfo'
 components:
   schemas:
     AddressRepresentation:
       required:
-        - "pinCode"
-      type: "object"
+        - pinCode
+      type: object
       properties:
         houseNo:
-          type: "string"
+          type: string
         street:
-          type: "string"
+          type: string
         landmark:
-          type: "string"
+          type: string
         pinCode:
-          type: "string"
+          type: string
         city:
-          type: "string"
+          type: string
     CreateCustomerRequest:
       required:
-        - "contactNumber"
-        - "firstName"
-        - "email"
-      type: "object"
+        - contactNumber
+        - firstName
+        - email
+      type: object
       properties:
         firstName:
-          type: "string"
+          type: string
         lastName:
-          type: "string"
+          type: string
         email:
-          type: "string"
+          type: string
           format: email
         contactNumber:
-          type: "string"
+          type: string
         address:
-          $ref: "#/components/schemas/AddressRepresentation"
+          $ref: '#/components/schemas/AddressRepresentation'
     OrderRequest:
-      type: "object"
+      type: object
       properties:
         productName:
-          type: "string"
+          type: string
         quantity:
-          type: "integer"
-          format: "int32"
+          type: integer
+          format: int32
         amount:
-          type: "number"
-          format: "float"
+          type: number
+          format: float
     OrderRepresentation:
-      type: "object"
+      type: object
       properties:
         orderId:
-          type: "integer"
-          format: "int64"
+          type: integer
+          format: int64
         productName:
-          type: "string"
+          type: string
         quantity:
-          type: "integer"
-          format: "int32"
+          type: integer
+          format: int32
         amount:
-          type: "number"
-          format: "float"
+          type: number
+          format: float
         orderTime:
-          type: "string"
-          format: "date-time"
+          type: string
+          format: date-time
         customerId:
-          type: "integer"
-          format: "int64"
+          type: integer
+          format: int64
     CustomerRepresentation:
-      type: "object"
+      type: object
       properties:
         id:
-          type: "integer"
-          format: "int64"
+          type: integer
+          format: int64
         firstName:
-          type: "string"
+          type: string
         lastName:
-          type: "string"
+          type: string
         email:
-          type: "string"
+          type: string
         contactNumber:
-          type: "string"
+          type: string
         address:
-          $ref: "#/components/schemas/AddressRepresentation"
+          $ref: '#/components/schemas/AddressRepresentation'
         orders:
-          type: "array"
+          type: array
           items:
-            $ref: "#/components/schemas/OrderRepresentation"
+            $ref: '#/components/schemas/OrderRepresentation'
     CustomerInfo:
-      type: "object"
+      type: object
       properties:
         id:
-          type: "integer"
-          format: "int64"
+          type: integer
+          format: int64
         firstName:
-          type: "string"
+          type: string
         lastName:
-          type: "string"
+          type: string
         email:
-          type: "string"
+          type: string
         contactNumber:
-          type: "string"
+          type: string
