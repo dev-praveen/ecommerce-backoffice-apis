@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,13 +27,18 @@ public class EcommerceService {
   @Transactional
   public Long saveCustomer(CreateCustomerRequest customerRepresentation) {
 
-    final var isCustomerExist = isCustomerAlreadyExists(customerRepresentation);
-    if (isCustomerExist) {
-      throw new DuplicateCustomerException(
-          "Found another customer with same details in database, please try with different first name, email, contact number");
-    }
-    final Customer customer = customerRepository.save(Customer.fromModel(customerRepresentation));
-    return customer.getId();
+    return isCustomerAlreadyExists(customerRepresentation)
+        .filter(customerExists -> Boolean.TRUE)
+        .map(
+            customerBoolean -> {
+              final Customer customer =
+                  customerRepository.save(Customer.fromModel(customerRepresentation));
+              return customer.getId();
+            })
+        .orElseThrow(
+            () ->
+                new DuplicateCustomerException(
+                    "Found another customer with same details in database, please try with different first name, email, contact number"));
   }
 
   @Transactional
@@ -68,11 +74,12 @@ public class EcommerceService {
 
   private Customer findCustomer(Long customerId) {
 
-    final var customerOptional = customerRepository.findById(customerId);
-    if (customerOptional.isEmpty()) {
-      throw new CustomerNotFoundException("Customer not found in database with id " + customerId);
-    }
-    return customerOptional.get();
+    return customerRepository
+        .findById(customerId)
+        .orElseThrow(
+            () ->
+                new CustomerNotFoundException(
+                    "Customer not found in database with id " + customerId));
   }
 
   @Transactional
@@ -87,12 +94,15 @@ public class EcommerceService {
     return orderRepository.findAll().stream().map(Order::toModel).toList();
   }
 
-  private boolean isCustomerAlreadyExists(CreateCustomerRequest customerRequest) {
+  private Optional<Boolean> isCustomerAlreadyExists(CreateCustomerRequest customerRequest) {
 
-    return customerRepository.existsBy(
-        customerRequest.getFirstName(),
-        customerRequest.getEmail(),
-        customerRequest.getContactNumber());
+    final var customerExists =
+        customerRepository.existsBy(
+            customerRequest.getFirstName(),
+            customerRequest.getEmail(),
+            customerRequest.getContactNumber());
+
+    return Optional.of(customerExists);
   }
 
   @Transactional
