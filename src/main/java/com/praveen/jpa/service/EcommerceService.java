@@ -28,7 +28,7 @@ public class EcommerceService {
   public Long saveCustomer(CreateCustomerRequest customerRepresentation) {
 
     return isCustomerAlreadyExists(customerRepresentation)
-        .filter(customerExists -> Boolean.TRUE)
+        .filter(customerExists -> !customerExists)
         .map(
             customerBoolean -> {
               final Customer customer =

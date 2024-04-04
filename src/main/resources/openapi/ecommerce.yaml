@@ -32,6 +32,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerRepresentation'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CustomerError'
     put:
       tags:
         - ecommerce-resource
@@ -52,6 +60,22 @@ paths:
       responses:
         '204':
           description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CustomerError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CustomerError'
     delete:
       tags:
         - ecommerce-resource
@@ -66,6 +90,14 @@ paths:
       responses:
         '204':
           description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CustomerError'
   /ecommerce/customer/address/{customerId}:
     put:
       tags:
@@ -87,6 +119,14 @@ paths:
       responses:
         '204':
           description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CustomerError'
   /ecommerce/placeOrder/{customerId}:
     post:
       tags:
@@ -113,6 +153,14 @@ paths:
               schema:
                 type: integer
                 format: int64
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CustomerError'
   /ecommerce/customer:
     post:
       tags:
@@ -132,6 +180,14 @@ paths:
               schema:
                 type: integer
                 format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CustomerError'
   /ecommerce/orders:
     get:
       tags:
@@ -167,6 +223,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OrderRepresentation'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CustomerError'
   /ecommerce/customers:
     get:
       tags:
@@ -295,3 +359,21 @@ components:
           type: string
         contactNumber:
           type: string
+    CustomerError:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+        timestamp:
+          type: string
+        errors:
+          type: array
