@@ -37,9 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/CustomerError'
     put:
       tags:
         - ecommerce-resource
@@ -65,17 +63,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/CustomerError'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/BadCustomerError'
     delete:
       tags:
         - ecommerce-resource
@@ -95,9 +89,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/CustomerError'
   /ecommerce/customer/address/{customerId}:
     put:
       tags:
@@ -124,9 +116,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/CustomerError'
   /ecommerce/placeOrder/{customerId}:
     post:
       tags:
@@ -158,9 +148,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/CustomerError'
   /ecommerce/customer:
     post:
       tags:
@@ -185,9 +173,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/BadCustomerError'
   /ecommerce/orders:
     get:
       tags:
@@ -228,9 +214,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/CustomerError'
   /ecommerce/customers:
     get:
       tags:
@@ -375,5 +359,11 @@ components:
           type: string
         timestamp:
           type: string
-        errors:
-          type: array
+    BadCustomerError:
+      allOf:
+        - $ref: '#/components/schemas/CustomerError'
+        - type: object
+          properties:
+            errors:
+              type: object
+              additionalProperties: true
