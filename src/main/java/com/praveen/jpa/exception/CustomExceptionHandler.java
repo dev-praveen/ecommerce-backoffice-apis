@@ -43,7 +43,7 @@ public class CustomExceptionHandler {
   public final ProblemDetail handleDuplicateCustomerException(DuplicateCustomerException e) {
 
     ProblemDetail problemDetail =
-        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
     problemDetail.setTitle("Duplicate input request");
     problemDetail.setProperty(TIMESTAMP, LocalDateTime.now());
     return problemDetail;

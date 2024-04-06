@@ -103,7 +103,7 @@ class EcommerceResourceIntTest {
     } catch (HttpClientErrorException exception) {
       final var message = exception.getMessage();
       assertThat(message).contains("Found another customer with same details in database");
-      assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+      assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
     }
   }
 

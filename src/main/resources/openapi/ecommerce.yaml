@@ -173,6 +173,12 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/CustomerError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/BadCustomerError'
   /ecommerce/orders:
     get:
