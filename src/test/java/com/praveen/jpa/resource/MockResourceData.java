@@ -41,7 +41,7 @@ public interface MockResourceData {
                     "houseNo": "456",
                     "street": "Broadway",
                     "landmark": "Next to Mall",
-                    "pinCode": "",
+                    "pinCode": null,
                     "city": "New City"
                 }
             }

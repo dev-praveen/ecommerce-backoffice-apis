@@ -11,7 +11,7 @@
     <groupId>com.praveen.jpa</groupId>
     <artifactId>ecommerce-backoffice-apis</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ecommerce-backoffice-appis</name>
+    <name>ecommerce-backoffice-apis</name>
     <description>Demo project for ecommerce backoffice application</description>
     <properties>
         <sonar.organization>sonar-cloud-scanner</sonar.organization>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.3.0</version>
+            <version>2.5.0</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -147,6 +147,40 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.11.0.3922</version>
+            </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.4.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi/ecommerce.yaml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <skipValidateSpec>false</skipValidateSpec>
+                            <apiPackage>com.praveen.jpa.api</apiPackage>
+                            <modelPackage>com.praveen.jpa.model</modelPackage>
+                            <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                            <configOptions>
+                                <openApiNullable>false</openApiNullable>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <additionalModelTypeAnnotations>@lombok.Builder @lombok.AllArgsConstructor</additionalModelTypeAnnotations>
+                                <performBeanValidation>true</performBeanValidation>
+                                <useBeanValidation>true</useBeanValidation>
+                            </configOptions>
+                            <typeMappings>
+                                <typeMapping>OffsetDateTime=LocalDateTime</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime</importMapping>
+                            </importMappings>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
