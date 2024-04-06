@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +29,9 @@ public class EcommerceService {
   public Long saveCustomer(CreateCustomerRequest customerRepresentation) {
 
     return isCustomerAlreadyExists(customerRepresentation)
-        .filter(customerExists -> !customerExists)
+        .filter(Predicate.not(customerExists -> customerExists))
         .map(
-            customerBoolean -> {
+            customerNotExists -> {
               final Customer customer =
                   customerRepository.save(Customer.fromModel(customerRepresentation));
               return customer.getId();
