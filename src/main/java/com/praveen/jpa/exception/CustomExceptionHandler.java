@@ -48,4 +48,15 @@ public class CustomExceptionHandler {
     problemDetail.setProperty(TIMESTAMP, LocalDateTime.now());
     return problemDetail;
   }
+
+  @ExceptionHandler(RuntimeException.class)
+  public final ProblemDetail handleException(RuntimeException e) {
+
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    problemDetail.setTitle(
+        "Something went wrong on our side, please retry after sometime or contact admin");
+    problemDetail.setProperty(TIMESTAMP, LocalDateTime.now());
+    return problemDetail;
+  }
 }

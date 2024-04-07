@@ -38,6 +38,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerError'
     put:
       tags:
         - ecommerce-resource
@@ -70,6 +76,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadCustomerError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerError'
     delete:
       tags:
         - ecommerce-resource
@@ -86,6 +98,12 @@ paths:
           description: No Content
         '404':
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerError'
+        '500':
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -111,8 +129,20 @@ paths:
       responses:
         '204':
           description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadCustomerError'
         '404':
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerError'
+        '500':
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -149,6 +179,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerError'
   /ecommerce/customer:
     post:
       tags:
@@ -180,6 +216,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerError'
   /ecommerce/orders:
     get:
       tags:
@@ -194,6 +236,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OrderRepresentation'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerError'
   /ecommerce/orders/{customerId}:
     get:
       tags:
@@ -221,6 +269,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerError'
   /ecommerce/customers:
     get:
       tags:
@@ -235,6 +289,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CustomerRepresentation'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerError'
   /ecommerce/customersInfo:
     get:
       tags:
@@ -249,6 +309,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CustomerInfo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerError'
 components:
   schemas:
     AddressRepresentation:
