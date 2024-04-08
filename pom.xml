@@ -116,7 +116,7 @@
                 <configuration>
                     <container>
                         <jvmFlags>
-                            <jvmFlag>-Dspring.profiles.active=h2</jvmFlag>
+                            <jvmFlag>-Dspring.profiles.active=postgres</jvmFlag>
                         </jvmFlags>
                     </container>
                     <to>

@@ -2,6 +2,7 @@ package com.praveen.jpa.resource;
 
 import com.praveen.jpa.api.EcommerceApi;
 import com.praveen.jpa.exception.CustomerNotFoundException;
+import com.praveen.jpa.model.AddressRepresentation;
 import com.praveen.jpa.model.CreateCustomerRequest;
 import com.praveen.jpa.model.OrderRequest;
 import com.praveen.jpa.service.EcommerceService;
@@ -13,11 +14,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = EcommerceApi.class)
@@ -177,6 +178,34 @@ class EcommerceResourceTest {
             .perform(
                 get("/ecommerce/customer/{customerId}", 2).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
+    assertThat(response).isNotNull();
+  }
+
+  @Test
+  void shouldFetchAllCustomersInfo() throws Exception {
+
+    when(ecommerceService.fetchAllCustomersInfo()).thenReturn(MockResourceData.getCustomersInfo());
+    final var response =
+        mockMvc
+            .perform(get("/ecommerce/customersInfo").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    assertThat(response).isNotNull();
+  }
+
+  @Test
+  void shouldUpdateAddressForCustomer() throws Exception {
+
+    doNothing()
+        .when(ecommerceService)
+        .updateCustomerAddress(anyLong(), any(AddressRepresentation.class));
+
+    final var response =
+        mockMvc
+            .perform(
+                put("/ecommerce/customer/address/{customerId}", 100L)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(MockResourceData.getAddressRequestJson()))
+            .andExpect(status().isNoContent());
     assertThat(response).isNotNull();
   }
 }

@@ -152,4 +152,41 @@ public interface MockResourceData {
         .houseNo("#19-09/A")
         .build();
   }
+
+  static String getAddressRequestJson() {
+
+    return
+    """
+            {
+                  "houseNo": "456",
+                  "street": "Broadway",
+                  "landmark": "Next to Mall",
+                  "pinCode": "565656",
+                  "city": "New City"
+            }
+           """;
+  }
+
+  static List<CustomerInfo> getCustomersInfo() {
+
+    final var customerInfo1 =
+        CustomerInfo.builder()
+            .id(100L)
+            .contactNumber("820-8942892")
+            .firstName("kyle")
+            .lastName("lessi")
+            .email("kyle.lessi@email.com ")
+            .build();
+
+    final var customerInfo2 =
+        CustomerInfo.builder()
+            .id(120L)
+            .contactNumber("576-956559")
+            .firstName("neilson")
+            .lastName("bore")
+            .email("neilson.bore@email.com")
+            .build();
+
+    return List.of(customerInfo1, customerInfo2);
+  }
 }
