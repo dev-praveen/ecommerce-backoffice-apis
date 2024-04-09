@@ -2,7 +2,7 @@ spring:
   application:
     name: ecommerce-backoffice-appis
   datasource:
-    url: jdbc:postgresql://${POSTGRES_CLOUD_URL}
+    url: ${POSTGRES_CLOUD_URL}
     username: avnadmin
     password: ${POSTGRES_CLOUD_PASSWORD}
     driver-class-name: org.postgresql.Driver
