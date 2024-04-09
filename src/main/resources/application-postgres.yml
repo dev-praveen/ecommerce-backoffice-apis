@@ -2,7 +2,7 @@ spring:
   application:
     name: ecommerce-backoffice-appis
   datasource:
-    url: jdbc:postgresql://${POSTGRES_CLOUD_URL}
+    url: ${POSTGRES_CLOUD_URL}
     username: avnadmin
     password: ${POSTGRES_CLOUD_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -11,7 +11,7 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        format_sql: true
+        #format_sql: true
         default_schema: ecommerce
     open-in-view: false
   liquibase:
@@ -20,6 +20,6 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-logging:
-  level:
-    sql: debug
+#logging:
+  #level:
+    #sql: debug
