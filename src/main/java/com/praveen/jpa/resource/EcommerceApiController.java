@@ -44,9 +44,12 @@ public class EcommerceApiController implements EcommerceApi {
   }
 
   @Override
-  public ResponseEntity<List<CustomerInfo>> getAllCustomersInfo() {
+  public ResponseEntity<CustomerInfoData> getAllCustomersInfo(
+      Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
-    final var customers = ecommerceService.fetchAllCustomersInfo();
+    int pageNumber = pageNo < 1 ? 0 : pageNo - 1;
+    final var customers =
+        ecommerceService.fetchAllCustomersInfo(pageNumber, pageSize, sortBy, sortDirection);
     return ResponseEntity.ok(customers);
   }
 

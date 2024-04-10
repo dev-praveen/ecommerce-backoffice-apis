@@ -167,7 +167,7 @@ public interface MockResourceData {
            """;
   }
 
-  static List<CustomerInfo> getCustomersInfo() {
+  static CustomerInfoData getCustomersInfo() {
 
     final var customerInfo1 =
         CustomerInfo.builder()
@@ -187,6 +187,15 @@ public interface MockResourceData {
             .email("neilson.bore@email.com")
             .build();
 
-    return List.of(customerInfo1, customerInfo2);
+    return CustomerInfoData.builder()
+        .customers(List.of(customerInfo1, customerInfo2))
+        .totalElements(2L)
+        .totalPages(1)
+        .currentPage(1)
+        .isFirst(true)
+        .isLast(true)
+        .hasNext(false)
+        .hasPrevious(false)
+        .build();
   }
 }

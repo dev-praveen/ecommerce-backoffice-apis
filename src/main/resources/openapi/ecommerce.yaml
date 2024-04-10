@@ -300,15 +300,42 @@ paths:
       tags:
         - ecommerce-resource
       operationId: getAllCustomersInfo
+      parameters:
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: sortBy
+          in: query
+          required: true
+          schema:
+            type: string
+            default: id
+            enum: [id, firstName]
+        - name: sortDirection
+          in: query
+          required: true
+          schema:
+            type: string
+            default: asc
+            enum: [asc, desc]
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CustomerInfo'
+                $ref: '#/components/schemas/CustomerInfoData'
         '500':
           description: Internal Server Error
           content:
@@ -401,6 +428,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderRepresentation'
+    CustomerInfoData:
+      type: object
+      properties:
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerInfo'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        currentPage:
+          type: integer
+          format: int32
+        isFirst:
+          type: boolean
+        isLast:
+          type: boolean
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
     CustomerInfo:
       type: object
       properties:

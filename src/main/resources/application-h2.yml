@@ -25,4 +25,4 @@ springdoc:
     path: /swagger-ui.html
 logging:
   level:
-    sql: debug
+    sql: ${logging.enabled:debug}

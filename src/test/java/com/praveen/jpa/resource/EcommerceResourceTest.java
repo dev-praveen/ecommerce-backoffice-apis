@@ -184,7 +184,8 @@ class EcommerceResourceTest {
   @Test
   void shouldFetchAllCustomersInfo() throws Exception {
 
-    when(ecommerceService.fetchAllCustomersInfo()).thenReturn(MockResourceData.getCustomersInfo());
+    when(ecommerceService.fetchAllCustomersInfo(anyInt(), anyInt(), anyString(), anyString()))
+        .thenReturn(MockResourceData.getCustomersInfo());
     final var response =
         mockMvc
             .perform(get("/ecommerce/customersInfo").contentType(MediaType.APPLICATION_JSON))

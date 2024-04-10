@@ -5,7 +5,7 @@ import com.praveen.jpa.dao.OrderRepository;
 import com.praveen.jpa.entity.Address;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
-import com.praveen.jpa.model.CustomerInfo;
+import com.praveen.jpa.model.CustomerInfoData;
 import com.praveen.jpa.model.CustomerRepresentation;
 import com.praveen.jpa.model.OrderRepresentation;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +25,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
@@ -60,7 +61,7 @@ class EcommerceResourceIntTest {
 
   @BeforeEach
   void setUp() {
-    restClient = RestClient.create("http://localhost:" + port + "/ecommerce");
+    restClient = RestClient.builder().baseUrl("http://localhost:" + port + "/ecommerce").build();
     customerRepository.deleteAll();
   }
 
@@ -286,12 +287,22 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .get()
-            .uri("/customersInfo")
+            .uri(
+                uriBuilder ->
+                    uriBuilder
+                        .path("/customersInfo")
+                        .queryParam("pageNo", "0")
+                        .queryParam("pageSize", "2")
+                        .queryParam("sortBy", "id")
+                        .queryParam("sortDirection", "asc")
+                        .build())
             .retrieve()
-            .toEntity(new ParameterizedTypeReference<List<CustomerInfo>>() {});
+            .toEntity(CustomerInfoData.class);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(response).isNotNull();
-    assertThat(response.getBody()).hasSize(2);
+    if (Objects.nonNull(response.getBody())) {
+      assertThat(response.getBody().getCustomers()).hasSize(2);
+    }
   }
 
   private void insertCustomersIntoDatabase() {

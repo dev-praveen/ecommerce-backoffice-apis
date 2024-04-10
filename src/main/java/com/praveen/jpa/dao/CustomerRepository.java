@@ -2,10 +2,11 @@ package com.praveen.jpa.dao;
 
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.model.CustomerInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
@@ -20,5 +21,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
       """
          select new com.praveen.jpa.model.CustomerInfo(c.id, c.firstName, c.lastName, c.email, c.contactNumber) from Customer c
       """)
-  List<CustomerInfo> fetchAllCustomersInfo();
+  Page<CustomerInfo> fetchAllCustomersInfo(Pageable pageable);
 }

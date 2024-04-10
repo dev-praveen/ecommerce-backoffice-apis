@@ -1,13 +1,16 @@
 package com.praveen.jpa.entity;
 
 import com.praveen.jpa.model.CreateCustomerRequest;
+import com.praveen.jpa.model.CustomerInfo;
+import com.praveen.jpa.model.CustomerInfoData;
 import com.praveen.jpa.model.CustomerRepresentation;
 import lombok.*;
 import jakarta.persistence.*;
-
+import org.springframework.data.domain.Page;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -68,8 +71,22 @@ public class Customer implements Serializable {
     customer.setLastName(customerRepresentation.getLastName());
     customer.setAddress(Address.fromModel(customerRepresentation.getAddress()));
     customer.setContactNumber(customerRepresentation.getContactNumber());
-    customer.setOrders(null);
+    customer.setOrders(Collections.emptyList());
     return customer;
+  }
+
+  public static CustomerInfoData fromCustomerInfoPage(Page<CustomerInfo> customerInfoPage) {
+
+    return CustomerInfoData.builder()
+        .customers(customerInfoPage.getContent())
+        .totalElements(customerInfoPage.getTotalElements())
+        .totalPages(customerInfoPage.getTotalPages())
+        .currentPage(customerInfoPage.getNumber() + 1)
+        .isFirst(customerInfoPage.isFirst())
+        .isLast(customerInfoPage.isLast())
+        .hasNext(customerInfoPage.hasNext())
+        .hasPrevious(customerInfoPage.hasPrevious())
+        .build();
   }
 
   public void setAddress(Address address) {

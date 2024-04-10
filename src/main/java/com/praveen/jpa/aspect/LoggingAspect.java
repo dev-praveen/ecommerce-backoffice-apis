@@ -21,12 +21,11 @@ public class LoggingAspect {
         joinPoint.getSignature().getDeclaringTypeName());
   }
 
-  @AfterReturning(pointcut = "execution(* com.praveen.jpa..*.* (..))", returning = "result")
-  public void logAfter(JoinPoint joinPoint, Object result) {
+  @AfterReturning(pointcut = "execution(* com.praveen.jpa..*.* (..))")
+  public void logAfter(JoinPoint joinPoint) {
     logger.info(
-        "Exiting method: {} with result: {} ,Class Name:{}",
+        "Exiting method: {} ,Class Name:{}",
         joinPoint.getSignature().getName(),
-        result,
         joinPoint.getSignature().getDeclaringTypeName());
   }
 }
