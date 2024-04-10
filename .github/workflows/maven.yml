@@ -42,6 +42,10 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     - name: Docker build and push image to Dockerhub
       run: mvn jib:build
+      env:
+        POSTGRES_CLOUD_URL: ${{ secrets.POSTGRES_CLOUD_URL }}
+        POSTGRES_CLOUD_USER: ${{ secrets.POSTGRES_CLOUD_URL }}
+        POSTGRES_CLOUD_PASSWORD: ${{ secrets.POSTGRES_CLOUD_PASSWORD }}
     - name: Deploy to Render
       env:
         deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
