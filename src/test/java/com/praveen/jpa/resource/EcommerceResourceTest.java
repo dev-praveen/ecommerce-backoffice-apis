@@ -90,7 +90,7 @@ class EcommerceResourceTest {
   void getAllCustomers() throws Exception {
 
     when(ecommerceService.findAllCustomers(anyInt(), anyInt(), anyString(), anyString()))
-        .thenReturn(MockResourceData.getMockCustomers());
+        .thenReturn(MockResourceData.getMockCustomersResponse());
 
     final var response =
         mockMvc
@@ -147,7 +147,7 @@ class EcommerceResourceTest {
   void fetchAllOrders() throws Exception {
 
     when(ecommerceService.fetchAllOrders(anyInt(), anyInt(), anyString(), anyString()))
-        .thenReturn(MockResourceData.getMockOrders());
+        .thenReturn(MockResourceData.getMockOrdersResponse());
 
     final var response =
         mockMvc

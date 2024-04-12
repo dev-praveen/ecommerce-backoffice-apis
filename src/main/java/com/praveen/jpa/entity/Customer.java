@@ -1,9 +1,6 @@
 package com.praveen.jpa.entity;
 
-import com.praveen.jpa.model.CreateCustomerRequest;
-import com.praveen.jpa.model.CustomerInfo;
-import com.praveen.jpa.model.CustomerInfoData;
-import com.praveen.jpa.model.CustomerRepresentation;
+import com.praveen.jpa.model.*;
 import lombok.*;
 import jakarta.persistence.*;
 import org.springframework.data.domain.Page;
@@ -86,6 +83,20 @@ public class Customer implements Serializable {
         .isLast(customerInfoPage.isLast())
         .hasNext(customerInfoPage.hasNext())
         .hasPrevious(customerInfoPage.hasPrevious())
+        .build();
+  }
+
+  public static CustomerResponse fromPageCustomer(Page<Customer> customerPage) {
+
+    return CustomerResponse.builder()
+        .customers(customerPage.getContent().stream().map(Customer::toModel).toList())
+        .totalElements(customerPage.getTotalElements())
+        .totalPages(customerPage.getTotalPages())
+        .currentPage(customerPage.getNumber() + 1)
+        .isFirst(customerPage.isFirst())
+        .isLast(customerPage.isLast())
+        .hasNext(customerPage.hasNext())
+        .hasPrevious(customerPage.hasPrevious())
         .build();
   }
 

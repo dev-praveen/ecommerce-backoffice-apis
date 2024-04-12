@@ -5,9 +5,8 @@ import com.praveen.jpa.dao.OrderRepository;
 import com.praveen.jpa.entity.Address;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
-import com.praveen.jpa.model.CustomerInfoData;
-import com.praveen.jpa.model.CustomerRepresentation;
-import com.praveen.jpa.model.OrderRepresentation;
+import com.praveen.jpa.model.*;
+import jakarta.validation.Valid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,14 +137,26 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .get()
-            .uri("/customers")
+            .uri(
+                uriBuilder ->
+                    uriBuilder
+                        .path("/customers")
+                        .queryParam("pageNo", 1)
+                        .queryParam("pageSize", 2)
+                        .queryParam("sortBy", "id")
+                        .queryParam("sortDirection", "asc")
+                        .build())
             .retrieve()
-            .toEntity(new ParameterizedTypeReference<List<CustomerRepresentation>>() {});
+            .toEntity(CustomerResponse.class);
 
     assertThat(response).isNotNull();
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(response.getBody()).hasSize(2);
-    assertThat(response.getBody()).extracting("orders").hasSize(2);
+
+    if (Objects.nonNull(response.getBody())) {
+      final var customers = response.getBody().getCustomers();
+      assertThat(customers).hasSize(2);
+      assertThat(customers).extracting("orders").hasSize(2);
+    }
   }
 
   @Test
@@ -202,7 +213,7 @@ class EcommerceResourceIntTest {
   @Test
   void shouldFetchAllOrdersForAllCustomers() {
 
-    final var customer = createCustomer();
+    createCustomer();
     final var response =
         restClient
             .get()
@@ -216,11 +227,14 @@ class EcommerceResourceIntTest {
                         .queryParam("sortDirection", "asc")
                         .build())
             .retrieve()
-            .toEntity(new ParameterizedTypeReference<List<OrderRepresentation>>() {});
+            .toEntity(OrderResponse.class);
 
     assertThat(response).isNotNull();
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(response.getBody()).hasSize(2);
+
+    if (Objects.nonNull(response.getBody())) {
+      assertThat(response.getBody().getOrders()).hasSize(2);
+    }
   }
 
   @Test

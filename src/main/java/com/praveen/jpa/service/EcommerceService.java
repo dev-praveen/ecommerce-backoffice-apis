@@ -10,6 +10,7 @@ import com.praveen.jpa.exception.CustomerNotFoundException;
 import com.praveen.jpa.exception.DuplicateCustomerException;
 import com.praveen.jpa.model.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -52,12 +53,13 @@ public class EcommerceService {
     customerRepository.save(Customer.updateModel(customer, customerRepresentation));
   }
 
-  public List<CustomerRepresentation> findAllCustomers(
+  public CustomerResponse findAllCustomers(
       Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
     Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-    return customerRepository.findAll(pageable).stream().map(Customer::toModel).toList();
+    final var customerPage = customerRepository.findAll(pageable);
+    return Customer.fromPageCustomer(customerPage);
   }
 
   @Transactional
@@ -96,12 +98,13 @@ public class EcommerceService {
     customerRepository.delete(customer);
   }
 
-  public List<OrderRepresentation> fetchAllOrders(
+  public OrderResponse fetchAllOrders(
       Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
     Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-    return orderRepository.findAll(pageable).stream().map(Order::toModel).toList();
+    final var pageOrders = orderRepository.findAll(pageable);
+    return Order.fromPageOrder(pageOrders);
   }
 
   private Optional<Boolean> isCustomerAlreadyExists(CreateCustomerRequest customerRequest) {

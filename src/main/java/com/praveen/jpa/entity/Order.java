@@ -1,9 +1,9 @@
 package com.praveen.jpa.entity;
 
-import com.praveen.jpa.model.OrderRepresentation;
-import com.praveen.jpa.model.OrderRequest;
+import com.praveen.jpa.model.*;
 import lombok.*;
 import jakarta.persistence.*;
+import org.springframework.data.domain.Page;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -56,6 +56,20 @@ public class Order implements Serializable {
     order.setCustomer(customerRep);
 
     return order;
+  }
+
+  public static OrderResponse fromPageOrder(Page<Order> pageOrder) {
+
+    return OrderResponse.builder()
+        .orders(pageOrder.getContent().stream().map(Order::toModel).toList())
+        .totalElements(pageOrder.getTotalElements())
+        .totalPages(pageOrder.getTotalPages())
+        .currentPage(pageOrder.getNumber() + 1)
+        .isFirst(pageOrder.isFirst())
+        .isLast(pageOrder.isLast())
+        .hasNext(pageOrder.hasNext())
+        .hasPrevious(pageOrder.hasPrevious())
+        .build();
   }
 
   public OrderRepresentation toModel() {

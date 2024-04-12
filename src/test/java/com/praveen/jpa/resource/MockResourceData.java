@@ -60,6 +60,20 @@ public interface MockResourceData {
             """;
   }
 
+  static CustomerResponse getMockCustomersResponse() {
+
+    return CustomerResponse.builder()
+        .customers(getMockCustomers())
+        .totalElements(2L)
+        .totalPages(1)
+        .currentPage(1)
+        .isFirst(true)
+        .isLast(true)
+        .hasNext(false)
+        .hasPrevious(false)
+        .build();
+  }
+
   static List<CustomerRepresentation> getMockCustomers() {
 
     CustomerRepresentation customer1 =
@@ -100,6 +114,22 @@ public interface MockResourceData {
             .build();
 
     return List.of(customer1, customer2);
+  }
+
+  static OrderResponse getMockOrdersResponse() {
+
+    final var mockOrders = getMockOrders();
+
+    return OrderResponse.builder()
+        .orders(mockOrders)
+        .totalElements(2L)
+        .totalPages(1)
+        .currentPage(1)
+        .isFirst(true)
+        .isLast(true)
+        .hasNext(false)
+        .hasPrevious(false)
+        .build();
   }
 
   static List<OrderRepresentation> getMockOrders() {

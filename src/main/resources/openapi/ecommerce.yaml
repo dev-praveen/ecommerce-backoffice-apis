@@ -262,9 +262,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OrderRepresentation'
+                $ref: '#/components/schemas/OrderResponse'
         '500':
           description: Internal Server Error
           content:
@@ -344,9 +342,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CustomerRepresentation'
+                $ref: '#/components/schemas/CustomerResponse'
         '500':
           description: Internal Server Error
           content:
@@ -486,6 +482,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderRepresentation'
+    CustomerResponse:
+      type: object
+      properties:
+        customers:
+          type: array
+          items:
+            $ref: 'CustomerRepresentation'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        currentPage:
+          type: integer
+          format: int32
+        isFirst:
+          type: boolean
+        isLast:
+          type: boolean
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
     CustomerInfoData:
       type: object
       properties:
@@ -493,6 +513,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomerInfo'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        currentPage:
+          type: integer
+          format: int32
+        isFirst:
+          type: boolean
+        isLast:
+          type: boolean
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
+    OrderResponse:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderRepresentation'
         totalElements:
           type: integer
           format: int64
