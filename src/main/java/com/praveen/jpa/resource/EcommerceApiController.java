@@ -30,16 +30,22 @@ public class EcommerceApiController implements EcommerceApi {
   }
 
   @Override
-  public ResponseEntity<List<OrderRepresentation>> fetchOrders() {
+  public ResponseEntity<List<OrderRepresentation>> fetchOrders(
+      Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
-    final List<OrderRepresentation> orders = ecommerceService.fetchAllOrders();
+    int pageNumber = pageNo < 1 ? 0 : pageNo - 1;
+    final List<OrderRepresentation> orders =
+        ecommerceService.fetchAllOrders(pageNumber, pageSize, sortBy, sortDirection);
     return ResponseEntity.ok(orders);
   }
 
   @Override
-  public ResponseEntity<List<CustomerRepresentation>> getAllCustomers() {
+  public ResponseEntity<List<CustomerRepresentation>> getAllCustomers(
+      Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
-    final var customers = ecommerceService.findAllCustomers();
+    int pageNumber = pageNo < 1 ? 0 : pageNo - 1;
+    final var customers =
+        ecommerceService.findAllCustomers(pageNumber, pageSize, sortBy, sortDirection);
     return ResponseEntity.ok(customers);
   }
 

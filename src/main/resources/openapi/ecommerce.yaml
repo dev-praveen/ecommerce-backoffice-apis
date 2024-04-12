@@ -227,6 +227,35 @@ paths:
       tags:
         - ecommerce-resource
       operationId: fetchOrders
+      parameters:
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: sortBy
+          in: query
+          required: true
+          schema:
+            type: string
+            default: id
+            enum: [id, firstName]
+        - name: sortDirection
+          in: query
+          required: true
+          schema:
+            type: string
+            default: asc
+            enum: [asc, desc]
       responses:
         '200':
           description: OK
@@ -280,6 +309,35 @@ paths:
       tags:
         - ecommerce-resource
       operationId: getAllCustomers
+      parameters:
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: sortBy
+          in: query
+          required: true
+          schema:
+            type: string
+            default: id
+            enum: [id, firstName]
+        - name: sortDirection
+          in: query
+          required: true
+          schema:
+            type: string
+            default: asc
+            enum: [asc, desc]
       responses:
         '200':
           description: OK

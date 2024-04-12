@@ -52,9 +52,12 @@ public class EcommerceService {
     customerRepository.save(Customer.updateModel(customer, customerRepresentation));
   }
 
-  public List<CustomerRepresentation> findAllCustomers() {
+  public List<CustomerRepresentation> findAllCustomers(
+      Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
-    return customerRepository.findAll().stream().map(Customer::toModel).toList();
+    Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+    Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+    return customerRepository.findAll(pageable).stream().map(Customer::toModel).toList();
   }
 
   @Transactional
@@ -93,9 +96,12 @@ public class EcommerceService {
     customerRepository.delete(customer);
   }
 
-  public List<OrderRepresentation> fetchAllOrders() {
+  public List<OrderRepresentation> fetchAllOrders(
+      Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
-    return orderRepository.findAll().stream().map(Order::toModel).toList();
+    Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+    Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+    return orderRepository.findAll(pageable).stream().map(Order::toModel).toList();
   }
 
   private Optional<Boolean> isCustomerAlreadyExists(CreateCustomerRequest customerRequest) {

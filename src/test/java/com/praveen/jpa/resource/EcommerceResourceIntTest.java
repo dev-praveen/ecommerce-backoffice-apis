@@ -206,7 +206,15 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .get()
-            .uri("/orders", customer.getId())
+            .uri(
+                uriBuilder ->
+                    uriBuilder
+                        .path("/orders")
+                        .queryParam("pageNo", 1)
+                        .queryParam("pageSize", 2)
+                        .queryParam("sortBy", "id")
+                        .queryParam("sortDirection", "asc")
+                        .build())
             .retrieve()
             .toEntity(new ParameterizedTypeReference<List<OrderRepresentation>>() {});
 
@@ -291,8 +299,8 @@ class EcommerceResourceIntTest {
                 uriBuilder ->
                     uriBuilder
                         .path("/customersInfo")
-                        .queryParam("pageNo", "0")
-                        .queryParam("pageSize", "2")
+                        .queryParam("pageNo", 1)
+                        .queryParam("pageSize", 2)
                         .queryParam("sortBy", "id")
                         .queryParam("sortDirection", "asc")
                         .build())
