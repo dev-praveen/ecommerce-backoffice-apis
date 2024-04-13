@@ -373,16 +373,12 @@ paths:
           in: query
           required: true
           schema:
-            type: string
-            default: id
-            enum: [id, firstName]
+            $ref: '#/components/schemas/SortByType'
         - name: sortDirection
           in: query
           required: true
           schema:
-            type: string
-            default: asc
-            enum: [asc, desc]
+            $ref: '#/components/schemas/SortByDirectionType'
       responses:
         '200':
           description: OK
@@ -592,3 +588,11 @@ components:
             errors:
               type: object
               additionalProperties: true
+    SortByType:
+      type: string
+      default: id
+      enum: [id, firstName]
+    SortByDirectionType:
+      type: string
+      default: asc
+      enum: [asc, desc]
