@@ -6,7 +6,6 @@ import com.praveen.jpa.entity.Address;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
 import com.praveen.jpa.model.*;
-import jakarta.validation.Valid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,14 +91,13 @@ class EcommerceResourceIntTest {
 
     createCustomer();
     try {
-      final var response =
-          restClient
-              .post()
-              .uri("/customer")
-              .body(MockResourceData.getCustomerRequest())
-              .contentType(MediaType.APPLICATION_JSON)
-              .retrieve()
-              .toEntity(ProblemDetail.class);
+      restClient
+          .post()
+          .uri("/customer")
+          .body(MockResourceData.getCustomerRequest())
+          .contentType(MediaType.APPLICATION_JSON)
+          .retrieve()
+          .toEntity(ProblemDetail.class);
     } catch (HttpClientErrorException exception) {
       final var message = exception.getMessage();
       assertThat(message).contains("Found another customer with same details in database");
@@ -108,16 +106,16 @@ class EcommerceResourceIntTest {
   }
 
   @Test
-  void shouldUpdateExistingCustomer() {
+  void shouldUpdateExistingCustomerInformation() {
 
     final var existingCustomer = createCustomer().getId();
-    final var customerRequest = MockResourceData.getCustomerRequest();
-    customerRequest.setEmail("updatedemail@email.com");
+    final var customerUpdateInfo = MockResourceData.getCustomerUpdateInfo();
+    customerUpdateInfo.setEmail("updatedemail@email.com");
     final var response =
         restClient
-            .put()
+            .patch()
             .uri("/customer/{customerId}", existingCustomer)
-            .body(customerRequest)
+            .body(customerUpdateInfo)
             .contentType(MediaType.APPLICATION_JSON)
             .retrieve()
             .toEntity(Void.class);
@@ -257,12 +255,7 @@ class EcommerceResourceIntTest {
   void shouldThrowExceptionForInvalidCustomerId() {
 
     try {
-      final var response =
-          restClient
-              .get()
-              .uri("/customer/{customerId}", 12)
-              .retrieve()
-              .toEntity(ProblemDetail.class);
+      restClient.get().uri("/customer/{customerId}", 12).retrieve().toEntity(ProblemDetail.class);
     } catch (HttpClientErrorException exception) {
       final var message = exception.getMessage();
       assertThat(message).contains("Customer not found in database with id 12");

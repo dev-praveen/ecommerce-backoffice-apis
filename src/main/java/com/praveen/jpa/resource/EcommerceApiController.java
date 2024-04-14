@@ -81,10 +81,10 @@ public class EcommerceApiController implements EcommerceApi {
   }
 
   @Override
-  public ResponseEntity<Void> updateCustomer(
-      Long customerId, CreateCustomerRequest createCustomerRequest) {
+  public ResponseEntity<Void> updateCustomerInfo(
+      Long customerId, CustomerUpdateInfo customerUpdateInfo) {
 
-    ecommerceService.updateCustomer(customerId, createCustomerRequest);
+    ecommerceService.updateCustomer(customerId, customerUpdateInfo);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 

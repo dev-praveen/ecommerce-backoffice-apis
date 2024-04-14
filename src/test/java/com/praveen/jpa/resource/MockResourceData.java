@@ -28,6 +28,19 @@ public interface MockResourceData {
             """;
   }
 
+  static String customerUpdateJsonRequest() {
+
+    return
+    """
+          {
+              "firstName": "Alice",
+              "lastName": "Smith",
+              "email": "alice.smith@example.com",
+              "contactNumber": "9876543210"
+          }
+          """;
+  }
+
   static String invalidCustomerJsonRequest() {
 
     return
@@ -164,6 +177,16 @@ public interface MockResourceData {
         .email("spraveen@email.com")
         .contactNumber("9848022338")
         .address(AddressRepresentation.builder().pinCode("600032").build())
+        .build();
+  }
+
+  static CustomerUpdateInfo getCustomerUpdateInfo() {
+
+    return CustomerUpdateInfo.builder()
+        .firstName("praveen")
+        .lastName("sana")
+        .email("spraveen@email.com")
+        .contactNumber("9848022338")
         .build();
   }
 

@@ -45,12 +45,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerError'
-    put:
+    patch:
       tags:
         - ecommerce-resource
-      operationId: updateCustomer
-      summary: Updates customer details
-      description: Updates customer details by customer id
+      operationId: updateCustomerInfo
+      summary: Updates customer information
+      description: Updates customer information by customer id
       parameters:
         - name: customerId
           description: id of a customer
@@ -63,7 +63,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateCustomerRequest'
+              $ref: '#/components/schemas/CustomerUpdateInfo'
         required: true
       responses:
         '204':
@@ -74,12 +74,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerError'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadCustomerError'
         '500':
           description: Internal Server Error
           content:
@@ -591,11 +585,16 @@ components:
         hasPrevious:
           type: boolean
     CustomerInfo:
+      allOf:
+        - $ref: '#/components/schemas/CustomerUpdateInfo'
       type: object
       properties:
         id:
           type: integer
           format: int64
+    CustomerUpdateInfo:
+      type: object
+      properties:
         firstName:
           type: string
         lastName:

@@ -47,10 +47,10 @@ public class EcommerceService {
   }
 
   @Transactional
-  public void updateCustomer(Long customerId, CreateCustomerRequest customerRepresentation) {
+  public void updateCustomer(Long customerId, CustomerUpdateInfo customerUpdateInfo) {
 
     final var customer = findCustomer(customerId);
-    customerRepository.save(Customer.updateModel(customer, customerRepresentation));
+    customerRepository.save(Customer.updateModel(customer, customerUpdateInfo));
   }
 
   public CustomerResponse findAllCustomers(

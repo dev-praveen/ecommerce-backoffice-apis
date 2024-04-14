@@ -4,6 +4,7 @@ import com.praveen.jpa.api.EcommerceApi;
 import com.praveen.jpa.exception.CustomerNotFoundException;
 import com.praveen.jpa.model.AddressRepresentation;
 import com.praveen.jpa.model.CreateCustomerRequest;
+import com.praveen.jpa.model.CustomerUpdateInfo;
 import com.praveen.jpa.model.OrderRequest;
 import com.praveen.jpa.service.EcommerceService;
 import org.junit.jupiter.api.AfterEach;
@@ -72,14 +73,14 @@ class EcommerceResourceTest {
 
     doNothing()
         .when(ecommerceService)
-        .updateCustomer(any(Long.class), any(CreateCustomerRequest.class));
+        .updateCustomer(any(Long.class), any(CustomerUpdateInfo.class));
 
     final var resultActions =
         mockMvc
             .perform(
-                put("/ecommerce/customer/{customerId}", 2)
+                patch("/ecommerce/customer/{customerId}", 2)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(MockResourceData.customerJsonRequest()))
+                    .content(MockResourceData.customerUpdateJsonRequest()))
             .andExpect(status().isNoContent());
 
     final var response = resultActions.andReturn().getResponse();

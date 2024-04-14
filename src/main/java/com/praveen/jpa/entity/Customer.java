@@ -3,6 +3,7 @@ package com.praveen.jpa.entity;
 import com.praveen.jpa.model.*;
 import lombok.*;
 import jakarta.persistence.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import java.io.Serial;
 import java.io.Serializable;
@@ -51,24 +52,29 @@ public class Customer implements Serializable {
   public static Customer fromModel(CreateCustomerRequest customerRepresentation) {
 
     final Customer customer = new Customer();
-    return populateCustomerRequestData(customer, customerRepresentation);
-  }
-
-  public static Customer updateModel(
-      Customer customer, CreateCustomerRequest customerRepresentation) {
-
-    return populateCustomerRequestData(customer, customerRepresentation);
-  }
-
-  private static Customer populateCustomerRequestData(
-      Customer customer, CreateCustomerRequest customerRepresentation) {
-
     customer.setEmail(customerRepresentation.getEmail());
     customer.setFirstName(customerRepresentation.getFirstName());
     customer.setLastName(customerRepresentation.getLastName());
     customer.setAddress(Address.fromModel(customerRepresentation.getAddress()));
     customer.setContactNumber(customerRepresentation.getContactNumber());
     customer.setOrders(Collections.emptyList());
+    return customer;
+  }
+
+  public static Customer updateModel(Customer customer, CustomerUpdateInfo customerUpdateInfo) {
+
+    if (StringUtils.isNotEmpty(customerUpdateInfo.getEmail())) {
+      customer.setEmail(customerUpdateInfo.getEmail());
+    }
+    if (StringUtils.isNotEmpty(customerUpdateInfo.getFirstName())) {
+      customer.setFirstName(customerUpdateInfo.getFirstName());
+    }
+    if (StringUtils.isNotEmpty(customerUpdateInfo.getLastName())) {
+      customer.setLastName(customerUpdateInfo.getLastName());
+    }
+    if (StringUtils.isNotEmpty(customerUpdateInfo.getContactNumber())) {
+      customer.setContactNumber(customerUpdateInfo.getContactNumber());
+    }
     return customer;
   }
 
