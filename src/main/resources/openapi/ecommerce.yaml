@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: E-Commerce API
   description: |-
@@ -441,6 +441,7 @@ components:
           type: string
         pinCode:
           type: string
+          minLength: 2
         city:
           type: string
     CreateCustomerRequest:
@@ -524,7 +525,7 @@ components:
         customers:
           type: array
           items:
-            $ref: 'CustomerRepresentation'
+            $ref: '#/components/schemas/CustomerRepresentation'
         totalElements:
           type: integer
           format: int64

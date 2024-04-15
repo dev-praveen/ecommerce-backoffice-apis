@@ -158,7 +158,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/openapi/ecommerce.yaml</inputSpec>
+                            <inputSpec>src/main/resources/openapi/ecommerce.yaml</inputSpec>
                             <generatorName>spring</generatorName>
                             <skipValidateSpec>false</skipValidateSpec>
                             <apiPackage>com.praveen.jpa.api</apiPackage>
