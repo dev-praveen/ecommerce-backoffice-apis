@@ -452,6 +452,7 @@ components:
       properties:
         firstName:
           type: string
+          minLength: 2
         lastName:
           type: string
         email:
@@ -459,6 +460,8 @@ components:
           format: email
         contactNumber:
           type: string
+          minLength: 2
+          maxLength: 25
         address:
           $ref: '#/components/schemas/AddressRepresentation'
     OrderRequest:
@@ -466,12 +469,15 @@ components:
       properties:
         productName:
           type: string
+          minLength: 2
         quantity:
           type: integer
           format: int32
+          minimum: 1
         amount:
           type: number
           format: float
+          minimum: 0.0
     OrderRepresentation:
       type: object
       properties:
