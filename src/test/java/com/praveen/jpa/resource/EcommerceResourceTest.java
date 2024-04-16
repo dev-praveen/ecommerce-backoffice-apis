@@ -90,7 +90,7 @@ class EcommerceResourceTest {
   @Test
   void getAllCustomers() throws Exception {
 
-    when(ecommerceService.findAllCustomers(anyInt(), anyInt(), anyString(), anyString()))
+    when(ecommerceService.fetchAllCustomers(anyInt(), anyInt(), anyString(), anyString()))
         .thenReturn(MockResourceData.getMockCustomersResponse());
 
     final var response =
@@ -118,7 +118,7 @@ class EcommerceResourceTest {
   @Test
   void getOrdersByCustomerId() throws Exception {
 
-    when(ecommerceService.findAllOrders(1L)).thenReturn(MockResourceData.getMockOrders());
+    when(ecommerceService.fetchAllOrders(1L)).thenReturn(MockResourceData.getMockOrders());
 
     final var response =
         mockMvc
@@ -160,7 +160,7 @@ class EcommerceResourceTest {
   @Test
   void shouldFetchCustomerById() throws Exception {
 
-    when(ecommerceService.getCustomer(any(Long.class)))
+    when(ecommerceService.fetchCustomer(any(Long.class)))
         .thenReturn(MockResourceData.getMockCustomers().get(1));
 
     final var response =
@@ -174,7 +174,7 @@ class EcommerceResourceTest {
   @Test
   void shouldThrowCustomerNotFoundExceptionForGetCustomerById() throws Exception {
 
-    when(ecommerceService.getCustomer(any(Long.class))).thenThrow(CustomerNotFoundException.class);
+    when(ecommerceService.fetchCustomer(any(Long.class))).thenThrow(CustomerNotFoundException.class);
 
     final var response =
         mockMvc

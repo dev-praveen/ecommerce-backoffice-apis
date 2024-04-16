@@ -30,7 +30,7 @@ public class EcommerceApiController implements EcommerceApi {
   }
 
   @Override
-  public ResponseEntity<OrderResponse> fetchOrders(
+  public ResponseEntity<OrderResponse> getAllOrders(
       Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
     int pageNumber = pageNo < 1 ? 0 : pageNo - 1;
@@ -45,7 +45,7 @@ public class EcommerceApiController implements EcommerceApi {
 
     int pageNumber = pageNo < 1 ? 0 : pageNo - 1;
     final var customers =
-        ecommerceService.findAllCustomers(pageNumber, pageSize, sortBy, sortDirection);
+        ecommerceService.fetchAllCustomers(pageNumber, pageSize, sortBy, sortDirection);
     return ResponseEntity.ok(customers);
   }
 
@@ -62,14 +62,14 @@ public class EcommerceApiController implements EcommerceApi {
   @Override
   public ResponseEntity<CustomerRepresentation> getCustomer(Long customerId) {
 
-    final var customer = ecommerceService.getCustomer(customerId);
+    final var customer = ecommerceService.fetchCustomer(customerId);
     return ResponseEntity.ok(customer);
   }
 
   @Override
   public ResponseEntity<List<OrderRepresentation>> getOrders(Long customerId) {
 
-    final List<OrderRepresentation> allOrders = ecommerceService.findAllOrders(customerId);
+    final List<OrderRepresentation> allOrders = ecommerceService.fetchAllOrders(customerId);
     return ResponseEntity.ok(allOrders);
   }
 

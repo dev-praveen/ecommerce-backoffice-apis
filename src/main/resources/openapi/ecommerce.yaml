@@ -38,19 +38,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/InternalServerError'
     patch:
       tags:
         - ecommerce-resource
       operationId: updateCustomerInfo
       summary: Updates customer information
-      description: Updates customer information by customer id
+      description: Updates customer information by customer id, null or empty filed values will not be updated.
       parameters:
         - name: customerId
           description: id of a customer
@@ -73,13 +73,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/InternalServerError'
     delete:
       tags:
         - ecommerce-resource
@@ -102,20 +102,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/InternalServerError'
   /ecommerce/customer/address/{customerId}:
     put:
       tags:
         - ecommerce-resource
       operationId: updateAddress
       summary: Updates customer address
-      description: Updates customer address by customer id
+      description: Updates customer address by customer id, null or empty filed values will not be updated.
       parameters:
         - name: customerId
           description: id of a customer
@@ -144,13 +144,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/InternalServerError'
   /ecommerce/placeOrder/{customerId}:
     post:
       tags:
@@ -185,13 +185,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/InternalServerError'
   /ecommerce/customer:
     post:
       tags:
@@ -224,20 +224,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/ConflictError'
         '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/InternalServerError'
   /ecommerce/orders:
     get:
       tags:
         - ecommerce-resource
-      operationId: fetchOrders
+      operationId: getAllOrders
       summary: Fetches all orders
-      description: Fetches all orders for all customers in the system
+      description: Fetches all orders for all customers from the system
       parameters:
         - name: pageNo
           description: Page number(it is like a page number in a book)
@@ -283,7 +283,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/InternalServerError'
   /ecommerce/orders/{customerId}:
     get:
       tags:
@@ -313,13 +313,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/InternalServerError'
   /ecommerce/customers:
     get:
       tags:
@@ -372,7 +372,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/InternalServerError'
   /ecommerce/customersInfo:
     get:
       tags:
@@ -425,7 +425,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerError'
+                $ref: '#/components/schemas/InternalServerError'
 components:
   schemas:
     AddressRepresentation:
@@ -617,15 +617,39 @@ components:
           type: string
         title:
           type: string
-        status:
-          type: integer
-          format: int32
         detail:
           type: string
         instance:
           type: string
         timestamp:
           type: string
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/CustomerError'
+        - type: object
+          properties:
+            status:
+              type: integer
+              format: int32
+              example: 404
+    InternalServerError:
+      allOf:
+        - $ref: '#/components/schemas/CustomerError'
+        - type: object
+          properties:
+            status:
+              type: integer
+              format: int32
+              example: 500
+    ConflictError:
+      allOf:
+        - $ref: '#/components/schemas/CustomerError'
+        - type: object
+          properties:
+            status:
+              type: integer
+              format: int32
+              example: 409
     BadCustomerError:
       allOf:
         - $ref: '#/components/schemas/CustomerError'
@@ -634,3 +658,7 @@ components:
             errors:
               type: object
               additionalProperties: true
+            status:
+              type: integer
+              format: int32
+              example: 400

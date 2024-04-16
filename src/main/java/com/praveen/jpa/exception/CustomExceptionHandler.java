@@ -32,7 +32,9 @@ public class CustomExceptionHandler {
             .collect(
                 Collectors.toMap(
                     error -> ((FieldError) error).getField(), error -> error.getDefaultMessage()));
-    ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(
+            HttpStatus.BAD_REQUEST, "Request payload is invalid, look for errors");
     problemDetail.setTitle("Request payload is invalid");
     problemDetail.setProperty(TIMESTAMP, LocalDateTime.now());
     problemDetail.setProperty("errors", errors);
@@ -55,7 +57,7 @@ public class CustomExceptionHandler {
     ProblemDetail problemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     problemDetail.setTitle(
-        "Something went wrong on our side, please retry after sometime or contact admin");
+        "Something went wrong, please retry after sometime or contact admin");
     problemDetail.setProperty(TIMESTAMP, LocalDateTime.now());
     return problemDetail;
   }

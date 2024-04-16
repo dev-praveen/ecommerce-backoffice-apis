@@ -3,6 +3,7 @@ package com.praveen.jpa.entity;
 import com.praveen.jpa.model.AddressRepresentation;
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -48,7 +49,11 @@ public class Address implements Serializable {
   public static Address fromModel(AddressRepresentation addressRepresentation) {
 
     final var address = new Address();
-    populateAddressData(address, addressRepresentation);
+    address.setStreet(addressRepresentation.getStreet());
+    address.setPinCode(addressRepresentation.getPinCode());
+    address.setLandmark(addressRepresentation.getLandmark());
+    address.setCity(addressRepresentation.getCity());
+    address.setHouseNo(addressRepresentation.getHouseNo());
     return address;
   }
 
@@ -56,18 +61,23 @@ public class Address implements Serializable {
       Customer customer, AddressRepresentation addressRepresentation) {
 
     final var address = customer.getAddress();
-    populateAddressData(address, addressRepresentation);
+
+    if (StringUtils.isNotEmpty(addressRepresentation.getStreet())) {
+      address.setStreet(addressRepresentation.getStreet());
+    }
+    if (StringUtils.isNotEmpty(addressRepresentation.getPinCode())) {
+      address.setPinCode(addressRepresentation.getPinCode());
+    }
+    if (StringUtils.isNotEmpty(addressRepresentation.getLandmark())) {
+      address.setLandmark(addressRepresentation.getLandmark());
+    }
+    if (StringUtils.isNotEmpty(addressRepresentation.getCity())) {
+      address.setCity(addressRepresentation.getCity());
+    }
+    if (StringUtils.isNotEmpty(addressRepresentation.getHouseNo())) {
+      address.setHouseNo(addressRepresentation.getHouseNo());
+    }
     return address;
-  }
-
-  private static void populateAddressData(
-      Address address, AddressRepresentation addressRepresentation) {
-
-    address.setStreet(addressRepresentation.getStreet());
-    address.setPinCode(addressRepresentation.getPinCode());
-    address.setLandmark(addressRepresentation.getLandmark());
-    address.setCity(addressRepresentation.getCity());
-    address.setHouseNo(addressRepresentation.getHouseNo());
   }
 
   public AddressRepresentation toModel() {

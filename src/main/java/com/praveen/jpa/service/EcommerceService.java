@@ -10,7 +10,6 @@ import com.praveen.jpa.exception.CustomerNotFoundException;
 import com.praveen.jpa.exception.DuplicateCustomerException;
 import com.praveen.jpa.model.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -53,7 +52,7 @@ public class EcommerceService {
     customerRepository.save(Customer.updateModel(customer, customerUpdateInfo));
   }
 
-  public CustomerResponse findAllCustomers(
+  public CustomerResponse fetchAllCustomers(
       Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
     Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
@@ -70,14 +69,14 @@ public class EcommerceService {
     return orderRepository.save(order).getId();
   }
 
-  public List<OrderRepresentation> findAllOrders(Long customerId) {
+  public List<OrderRepresentation> fetchAllOrders(Long customerId) {
 
     final var customer = findCustomer(customerId);
     final var orders = orderRepository.findByCustomerId(customer.getId());
     return orders.stream().map(Order::toModel).toList();
   }
 
-  public CustomerRepresentation getCustomer(Long customerId) {
+  public CustomerRepresentation fetchCustomer(Long customerId) {
     return findCustomer(customerId).toModel();
   }
 

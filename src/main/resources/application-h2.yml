@@ -24,6 +24,8 @@ spring:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
     default-schema: ecommerce
 springdoc:
+  api-docs:
+    version: OPENAPI_3_1
   swagger-ui:
     path: /swagger-ui.html
 logging:
