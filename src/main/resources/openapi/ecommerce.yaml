@@ -262,7 +262,7 @@ paths:
           schema:
             type: string
             default: id
-            enum: [id, firstName]
+            enum: [ id, firstName ]
         - name: sortDirection
           description: Sort direction either ascending(asc) or descending(desc)
           in: query
@@ -270,7 +270,7 @@ paths:
           schema:
             type: string
             default: asc
-            enum: [asc, desc]
+            enum: [ asc, desc ]
       responses:
         '200':
           description: OK
@@ -320,6 +320,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
+  /ecommerce/cancelOrder/customer/{customerId}/order/{orderId}:
+    delete:
+      tags:
+        - ecommerce-resource
+      operationId: cancelOrder
+      summary: Cancels order for a customer by order id
+      description: Cancels order for a particular customer by a order id in the system
+      parameters:
+        - name: customerId
+          description: id of a customer
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: orderId
+          description: id of an order
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: No Content
+        '409':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
   /ecommerce/customers:
     get:
       tags:
@@ -351,7 +394,7 @@ paths:
           schema:
             type: string
             default: id
-            enum: [id, firstName]
+            enum: [ id, firstName ]
         - name: sortDirection
           description: Sort direction either ascending(asc) or descending(desc)
           in: query
@@ -359,7 +402,7 @@ paths:
           schema:
             type: string
             default: asc
-            enum: [asc, desc]
+            enum: [ asc, desc ]
       responses:
         '200':
           description: OK
@@ -404,7 +447,7 @@ paths:
           schema:
             type: string
             default: id
-            enum: [id, firstName]
+            enum: [ id, firstName ]
         - name: sortDirection
           description: Sort direction either ascending(asc) or descending(desc)
           in: query
@@ -412,7 +455,7 @@ paths:
           schema:
             type: string
             default: asc
-            enum: [asc, desc]
+            enum: [ asc, desc ]
       responses:
         '200':
           description: OK
@@ -499,6 +542,8 @@ components:
         customerId:
           type: integer
           format: int64
+        status:
+          type: string
     CustomerRepresentation:
       type: object
       properties:

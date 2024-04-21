@@ -56,108 +56,117 @@ VALUES
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id, status
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'mattress',
     2,
     900.99,
     '2024-03-14 14:20:00',
-    165850
+    165850,
+    'active'
 );
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id, status
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'bedsheets',
     5,
     200.50,
     '2024-03-15 09:45:00',
-    165851
+    165851,
+    'active'
 );
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id, status
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'blankets',
     3,
     100.25,
     '2024-03-16 12:10:00',
-    165852
+    165852,
+    'active'
 );
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id, status
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'comforters',
     4,
     300.75,
     '2024-03-17 15:30:00',
-    165853
+    165853,
+    'active'
 );
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id, status
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'pillows',
     6,
     400.50,
     '2024-03-18 18:45:00',
-    165854
+    165854,
+    'cancelled'
 );
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id, status
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'mattress',
     1,
     450.99,
     '2024-03-19 10:00:00',
-    165852
+    165852,
+    'cancelled'
 );
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id, status
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'bedsheets',
     8,
     300.25,
     '2024-03-20 12:30:00',
-    165853
+    165853,
+    'cancelled'
 );
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id, status
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'blankets',
     2,
     150.50,
     '2024-03-21 14:50:00',
-    165854
+    165854,
+    'cancelled'
 );
 
 -- Inserting into ecommerce.orders table
 INSERT INTO ecommerce.orders (
-    id, product_name, quantity, amount, order_time, customer_id
+    id, product_name, quantity, amount, order_time, customer_id, status
 ) VALUES (
     nextval('ecommerce.order_id_generator_sequence'), -- This will generate the next value from the sequence
     'comforters',
     7,
     500.75,
     '2024-03-22 17:15:00',
-    165850
+    165850,
+    'active'
 );

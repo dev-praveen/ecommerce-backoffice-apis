@@ -4,7 +4,6 @@ import com.praveen.jpa.model.*;
 import lombok.*;
 import jakarta.persistence.*;
 import org.springframework.data.domain.Page;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -46,6 +45,9 @@ public class Order implements Serializable {
   @JoinColumn(name = "customer_id")
   private Customer customer;
 
+  @Column(name = "STATUS")
+  private String status;
+
   public static Order fromModel(OrderRequest orderRequest, Customer customerRep) {
 
     final Order order = new Order();
@@ -54,6 +56,7 @@ public class Order implements Serializable {
     order.setAmount(orderRequest.getAmount());
     order.setOrderTime(LocalDateTime.now());
     order.setCustomer(customerRep);
+    order.setStatus("active");
 
     return order;
   }
@@ -81,6 +84,7 @@ public class Order implements Serializable {
         .amount(amount)
         .orderTime(orderTime)
         .customerId(customer.getId())
+        .status(status)
         .build();
   }
 }

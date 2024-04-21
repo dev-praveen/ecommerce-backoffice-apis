@@ -6,8 +6,10 @@ import com.praveen.jpa.dao.OrderRepository;
 import com.praveen.jpa.entity.Address;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
+import com.praveen.jpa.exception.CancelOrderException;
 import com.praveen.jpa.exception.CustomerNotFoundException;
 import com.praveen.jpa.exception.DuplicateCustomerException;
+import com.praveen.jpa.exception.OrderNotFoundException;
 import com.praveen.jpa.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -16,14 +18,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class EcommerceService {
 
+  private static final String CANCEL_ORDER_STATUS = "cancelled";
   private final OrderRepository orderRepository;
   private final CustomerRepository customerRepository;
   private final AddressRepository addressRepository;
@@ -31,18 +33,12 @@ public class EcommerceService {
   @Transactional
   public Long saveCustomer(CreateCustomerRequest customerRepresentation) {
 
-    return isCustomerAlreadyExists(customerRepresentation)
-        .filter(Predicate.not(customerExists -> customerExists))
-        .map(
-            customerNotExists -> {
-              final Customer customer =
-                  customerRepository.save(Customer.fromModel(customerRepresentation));
-              return customer.getId();
-            })
-        .orElseThrow(
-            () ->
-                new DuplicateCustomerException(
-                    "Found another customer with same details in database, please try with different first name, email, contact number"));
+    if (isCustomerAlreadyExists(customerRepresentation)) {
+      throw new DuplicateCustomerException(
+          "Found another customer with same details in database, please try with different first name, email, contact number");
+    }
+    final Customer customer = customerRepository.save(Customer.fromModel(customerRepresentation));
+    return customer.getId();
   }
 
   @Transactional
@@ -106,15 +102,12 @@ public class EcommerceService {
     return Order.fromPageOrder(pageOrders);
   }
 
-  private Optional<Boolean> isCustomerAlreadyExists(CreateCustomerRequest customerRequest) {
+  private boolean isCustomerAlreadyExists(CreateCustomerRequest customerRequest) {
 
-    final var customerExists =
-        customerRepository.existsBy(
-            customerRequest.getFirstName(),
-            customerRequest.getEmail(),
-            customerRequest.getContactNumber());
-
-    return Optional.of(customerExists);
+    return customerRepository.existsBy(
+        customerRequest.getFirstName(),
+        customerRequest.getEmail(),
+        customerRequest.getContactNumber());
   }
 
   @Transactional
@@ -133,5 +126,30 @@ public class EcommerceService {
     final var customerInfoPage = customerRepository.fetchAllCustomersInfo(pageable);
 
     return Customer.fromCustomerInfoPage(customerInfoPage);
+  }
+
+  @Transactional
+  public void cancelOrder(Long customerId, Long orderId) {
+
+    final var customer = findCustomer(customerId);
+
+    customer.getOrders().stream()
+        .filter(order -> Objects.equals(order.getId(), orderId))
+        .findFirst()
+        .ifPresentOrElse(
+            order -> updateOrder(orderId, order),
+            () -> {
+              throw new OrderNotFoundException(
+                  "Order not found in database with id " + orderId + " for customer " + customerId);
+            });
+  }
+
+  private void updateOrder(Long orderId, Order order) {
+
+    if (CANCEL_ORDER_STATUS.equals(order.getStatus())) {
+      throw new CancelOrderException(
+          "order " + orderId + " is already cancelled, please check the order again");
+    }
+    orderRepository.updateStatus(CANCEL_ORDER_STATUS, orderId);
   }
 }

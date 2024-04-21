@@ -24,6 +24,8 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
@@ -47,12 +49,14 @@ class EcommerceResourceIntTest {
     order1.setOrderTime(LocalDateTime.now());
     order1.setProductName("Mac");
     order1.setQuantity(1);
+    order1.setStatus("active");
 
     final var order2 = new Order();
     order2.setAmount(788.09f);
     order2.setOrderTime(LocalDateTime.now());
     order2.setProductName("Lenovo");
     order2.setQuantity(3);
+    order2.setStatus("cancelled");
 
     return List.of(order1, order2);
   }
@@ -317,6 +321,65 @@ class EcommerceResourceIntTest {
     assertThat(response).isNotNull();
     if (Objects.nonNull(response.getBody())) {
       assertThat(response.getBody().getCustomers()).hasSize(2);
+    }
+  }
+
+  @Test
+  void shouldCancelAnOrderForACustomer() {
+
+    final var customer = createCustomer();
+    final var order = customer.getOrders().stream().findFirst();
+    final var orderId = order.map(Order::getId).orElseThrow();
+    final var response =
+        restClient
+            .delete()
+            .uri("/cancelOrder/customer/{customerId}/order/{orderId}", customer.getId(), orderId)
+            .retrieve()
+            .toEntity(Void.class);
+
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    assertThat(response).isNotNull();
+
+    final var orderOptional = orderRepository.findById(orderId);
+    if (orderOptional.isPresent()) {
+      final var dbOrder = orderOptional.get();
+      assertThat(dbOrder.getStatus()).isEqualTo("cancelled");
+    }
+  }
+
+  @Test
+  void shouldThrowExceptionForNonExistentOrder() {
+
+    final var customer = createCustomer();
+    try {
+      restClient
+          .delete()
+          .uri("/cancelOrder/customer/{customerId}/order/{orderId}", customer.getId(), 1)
+          .retrieve()
+          .toEntity(ProblemDetail.class);
+    } catch (HttpClientErrorException exception) {
+      final var message = exception.getMessage();
+      assertThat(message).contains("Order not found in database with id 1");
+      assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Test
+  void shouldThrowExceptionForAlreadyCancelledOrder() {
+
+    final var customer = createCustomer();
+    final var order = customer.getOrders().get(1);
+    final var orderId = order.getId();
+    try {
+      restClient
+          .delete()
+          .uri("/cancelOrder/customer/{customerId}/order/{orderId}", customer.getId(), orderId)
+          .retrieve()
+          .toEntity(ProblemDetail.class);
+    } catch (HttpClientErrorException exception) {
+      final var message = exception.getMessage();
+      assertThat(message).contains("order " + orderId + " is already cancelled");
+      assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
     }
   }
 

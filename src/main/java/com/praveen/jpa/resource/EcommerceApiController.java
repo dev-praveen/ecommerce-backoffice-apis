@@ -95,4 +95,11 @@ public class EcommerceApiController implements EcommerceApi {
     ecommerceService.updateCustomerAddress(customerId, addressRepresentation);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
+
+  @Override
+  public ResponseEntity<Void> cancelOrder(Long customerId, Long orderId) {
+
+    ecommerceService.cancelOrder(customerId, orderId);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
 }
