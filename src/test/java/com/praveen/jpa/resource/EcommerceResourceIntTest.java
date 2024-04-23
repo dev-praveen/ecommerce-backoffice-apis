@@ -343,6 +343,7 @@ class EcommerceResourceIntTest {
     if (orderOptional.isPresent()) {
       final var dbOrder = orderOptional.get();
       assertThat(dbOrder.getStatus()).isEqualTo("cancelled");
+      assertThat(dbOrder.getCancelledAt()).isNotNull();
     }
   }
 

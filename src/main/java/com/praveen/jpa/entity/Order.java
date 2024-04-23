@@ -47,8 +47,11 @@ public class Order implements Serializable {
   @JoinColumn(name = "customer_id")
   private Customer customer;
 
-  @Column(name = "STATUS")
+  @Column(name = "STATUS", nullable = false)
   private String status;
+
+  @Column(name = "cancelled_at")
+  private LocalDateTime cancelledAt;
 
   public static Order fromModel(OrderRequest orderRequest, Customer customerRep) {
 
@@ -87,6 +90,7 @@ public class Order implements Serializable {
         .orderTime(orderTime)
         .customerId(customer.getId())
         .status(status)
+        .cancelledTimestamp(cancelledAt)
         .build();
   }
 }

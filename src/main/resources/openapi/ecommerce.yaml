@@ -180,6 +180,12 @@ paths:
               schema:
                 type: integer
                 format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadCustomerError'
         '404':
           description: Not Found
           content:
@@ -264,13 +270,13 @@ paths:
             format: int32
             default: 10
         - name: sortBy
-          description: Sort records based on id or firstName of a customer
+          description: Sort records based on id or orderTime or quantity or status of an order
           in: query
           required: true
           schema:
             type: string
             default: id
-            enum: [ id, firstName ]
+            enum: [ id, orderTime, quantity, status ]
         - name: sortDirection
           description: Sort direction either ascending(asc) or descending(desc)
           in: query
@@ -552,6 +558,9 @@ components:
           format: int64
         status:
           type: string
+        cancelledTimestamp:
+          type: string
+          format: date-time
     CustomerRepresentation:
       type: object
       properties:

@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -150,6 +152,6 @@ public class EcommerceService {
       throw new CancelOrderException(
           "order " + orderId + " is already cancelled, please check the order again");
     }
-    orderRepository.updateStatus(CANCEL_ORDER_STATUS, orderId);
+    orderRepository.updateStatus(CANCEL_ORDER_STATUS, orderId, LocalDateTime.now());
   }
 }
