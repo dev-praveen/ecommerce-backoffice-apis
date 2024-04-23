@@ -94,11 +94,11 @@ public class EcommerceService {
   }
 
   public OrderResponse fetchAllOrders(
-      Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
+      String orderStatus, Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
     Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-    final var pageOrders = orderRepository.findAll(pageable);
+    final var pageOrders = orderRepository.findAllByStatus(pageable, orderStatus);
     return Order.fromPageOrder(pageOrders);
   }
 

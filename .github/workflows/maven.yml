@@ -34,14 +34,14 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=dev-praveen_ecommerce-backoffice-apis
+      run: ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=dev-praveen_ecommerce-backoffice-apis
     - name: Login to Dockerhub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     - name: Docker build and push image to Dockerhub
-      run: mvn jib:build
+      run: ./mvnw jib:build
     - name: Deploy to Render
       env:
         deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}

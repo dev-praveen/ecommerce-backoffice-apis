@@ -24,8 +24,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
@@ -223,6 +221,7 @@ class EcommerceResourceIntTest {
                 uriBuilder ->
                     uriBuilder
                         .path("/orders")
+                        .queryParam("orderStatus", "active")
                         .queryParam("pageNo", 1)
                         .queryParam("pageSize", 2)
                         .queryParam("sortBy", "id")
@@ -235,7 +234,7 @@ class EcommerceResourceIntTest {
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
     if (Objects.nonNull(response.getBody())) {
-      assertThat(response.getBody().getOrders()).hasSize(2);
+      assertThat(response.getBody().getOrders()).hasSize(1);
     }
   }
 

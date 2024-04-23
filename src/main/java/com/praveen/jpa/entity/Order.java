@@ -19,6 +19,8 @@ public class Order implements Serializable {
 
   @Serial private static final long serialVersionUID = -6373223943264489431L;
 
+  private static final String ACTIVE_STATUS = "active";
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDER_ID_GENERATOR_SEQUENCE")
   @SequenceGenerator(
@@ -56,7 +58,7 @@ public class Order implements Serializable {
     order.setAmount(orderRequest.getAmount());
     order.setOrderTime(LocalDateTime.now());
     order.setCustomer(customerRep);
-    order.setStatus("active");
+    order.setStatus(ACTIVE_STATUS);
 
     return order;
   }

@@ -10,8 +10,7 @@ public interface MockResourceData {
 
   static String customerJsonRequest() {
 
-    return
-    """
+    return """
             {
                 "firstName": "Alice",
                 "lastName": "Smith",
@@ -30,8 +29,7 @@ public interface MockResourceData {
 
   static String customerUpdateJsonRequest() {
 
-    return
-    """
+    return """
           {
               "firstName": "Alice",
               "lastName": "Smith",
@@ -43,8 +41,7 @@ public interface MockResourceData {
 
   static String invalidCustomerJsonRequest() {
 
-    return
-    """
+    return """
             {
                 "firstName": null,
                 "lastName": "Smith",
@@ -63,8 +60,7 @@ public interface MockResourceData {
 
   static String orderJsonRequest() {
 
-    return
-    """
+    return """
             {
               "productName": "tiles",
               "quantity": 200,
@@ -208,8 +204,7 @@ public interface MockResourceData {
 
   static String getAddressRequestJson() {
 
-    return
-    """
+    return """
             {
                   "houseNo": "456",
                   "street": "Broadway",

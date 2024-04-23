@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = EcommerceApi.class)
@@ -147,7 +146,7 @@ class EcommerceResourceTest {
   @Test
   void fetchAllOrders() throws Exception {
 
-    when(ecommerceService.fetchAllOrders(anyInt(), anyInt(), anyString(), anyString()))
+    when(ecommerceService.fetchAllOrders(anyString(), anyInt(), anyInt(), anyString(), anyString()))
         .thenReturn(MockResourceData.getMockOrdersResponse());
 
     final var response =
@@ -174,7 +173,8 @@ class EcommerceResourceTest {
   @Test
   void shouldThrowCustomerNotFoundExceptionForGetCustomerById() throws Exception {
 
-    when(ecommerceService.fetchCustomer(any(Long.class))).thenThrow(CustomerNotFoundException.class);
+    when(ecommerceService.fetchCustomer(any(Long.class)))
+        .thenThrow(CustomerNotFoundException.class);
 
     final var response =
         mockMvc

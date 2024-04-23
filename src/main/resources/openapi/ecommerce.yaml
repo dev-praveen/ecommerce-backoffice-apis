@@ -239,6 +239,14 @@ paths:
       summary: Fetches all orders
       description: Fetches all orders for all customers from the system
       parameters:
+        - name: orderStatus
+          description: status of an order either active or cancelled
+          in: query
+          required: true
+          schema:
+            type: string
+            default: active
+            enum: [ active, cancelled ]
         - name: pageNo
           description: Page number(it is like a page number in a book)
           in: query
@@ -326,7 +334,7 @@ paths:
         - ecommerce-resource
       operationId: cancelOrder
       summary: Cancels order for a customer by order id
-      description: Cancels order for a particular customer by a order id in the system
+      description: Cancels an order for a specific customer based on the order ID in the system
       parameters:
         - name: customerId
           description: id of a customer
@@ -346,7 +354,7 @@ paths:
         '204':
           description: No Content
         '409':
-          description: Bad Request
+          description: Conflict
           content:
             application/json:
               schema:
