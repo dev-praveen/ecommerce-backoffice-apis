@@ -68,6 +68,12 @@ paths:
       responses:
         '204':
           description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadCustomerError'
         '404':
           description: Not Found
           content:
@@ -662,6 +668,8 @@ components:
           type: integer
           format: int64
     CustomerUpdateInfo:
+      required:
+        - email
       type: object
       properties:
         firstName:
@@ -670,6 +678,7 @@ components:
           type: string
         email:
           type: string
+          format: email
         contactNumber:
           type: string
     CustomerError:
