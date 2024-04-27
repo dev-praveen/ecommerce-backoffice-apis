@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.util.CollectionUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -144,6 +144,16 @@ public class EcommerceService {
               throw new OrderNotFoundException(
                   "Order not found in database with id " + orderId + " for customer " + customerId);
             });
+  }
+
+  public List<CustomerInfo> searchForCustomers(String customerName) {
+
+    final var customerInfoList = customerRepository.searchByName(customerName);
+    if (CollectionUtils.isEmpty(customerInfoList)) {
+      throw new CustomerNotFoundException(
+          "No customer(s) found in database with the name " + customerName);
+    }
+    return customerInfoList;
   }
 
   private void updateOrder(Long orderId, Order order) {

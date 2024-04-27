@@ -115,6 +115,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
+  /ecommerce/customer/search/{customerName}:
+    get:
+      tags:
+        - ecommerce-resource
+      summary: Searches for customers
+      description: Searches for customers by name
+      operationId: searchCustomers
+      parameters:
+        - name: customerName
+          in: path
+          description: name of a customer to search
+          required: true
+          schema:
+            type: string
+            minLength: 3
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerInfo'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
   /ecommerce/customer/address/{customerId}:
     put:
       tags:

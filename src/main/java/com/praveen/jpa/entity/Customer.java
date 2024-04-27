@@ -43,7 +43,7 @@ public class Customer implements Serializable {
   @Column(name = "CONTACT_NUMBER", nullable = false)
   private String contactNumber;
 
-  @OneToOne(mappedBy = "customer", orphanRemoval = true, cascade = CascadeType.ALL)
+  @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
   private Address address;
 
   @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)

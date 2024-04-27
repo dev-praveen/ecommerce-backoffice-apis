@@ -102,4 +102,11 @@ public class EcommerceApiController implements EcommerceApi {
     ecommerceService.cancelOrder(customerId, orderId);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
+
+  @Override
+  public ResponseEntity<List<CustomerInfo>> searchCustomers(String customerName) {
+
+    final var customers = ecommerceService.searchForCustomers(customerName);
+    return ResponseEntity.ok(customers);
+  }
 }

@@ -383,6 +383,40 @@ class EcommerceResourceIntTest {
     }
   }
 
+  @Test
+  void shouldSearchAndFetchCustomersByName() {
+
+    insertCustomersIntoDatabase();
+    final var response =
+        restClient
+            .get()
+            .uri("/customer/search/{customerName}", "rana")
+            .retrieve()
+            .toEntity(new ParameterizedTypeReference<List<CustomerInfo>>() {});
+
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(response.getBody()).isNotNull();
+    assertThat(response.getBody()).hasSize(1);
+  }
+
+  @Test
+  void shouldThrowExceptionForSearchCustomersByName() {
+
+    insertCustomersIntoDatabase();
+    String searchName = "abc";
+    try {
+      restClient
+          .get()
+          .uri("/customer/search/{customerName}", searchName)
+          .retrieve()
+          .toEntity(ProblemDetail.class);
+    } catch (HttpClientErrorException exception) {
+      final var message = exception.getMessage();
+      assertThat(message).contains("No customer(s) found in database with the name " + searchName);
+      assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+  }
+
   private void insertCustomersIntoDatabase() {
 
     final var customer1 = new Customer();
