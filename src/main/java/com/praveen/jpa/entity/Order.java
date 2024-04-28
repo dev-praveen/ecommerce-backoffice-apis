@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Getter
 @Setter
@@ -59,7 +60,7 @@ public class Order implements Serializable {
     order.setProductName(orderRequest.getProductName());
     order.setQuantity(orderRequest.getQuantity());
     order.setAmount(orderRequest.getAmount());
-    order.setOrderTime(LocalDateTime.now());
+    order.setOrderTime(LocalDateTime.now(ZoneId.of("Asia/Kolkata")));
     order.setCustomer(customerRep);
     order.setStatus(ACTIVE_STATUS);
 

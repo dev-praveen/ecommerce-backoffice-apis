@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
@@ -162,6 +163,7 @@ public class EcommerceService {
       throw new CancelOrderException(
           "order " + orderId + " is already cancelled, please check the order again");
     }
-    orderRepository.updateStatus(CANCEL_ORDER_STATUS, orderId, LocalDateTime.now());
+    orderRepository.updateStatus(
+        CANCEL_ORDER_STATUS, orderId, LocalDateTime.now(ZoneId.of("Asia/Kolkata")));
   }
 }
