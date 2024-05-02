@@ -112,10 +112,10 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.4.2</version>
                 <configuration>
                     <from>
-                        <image>eclipse-temurin:21-jre</image>
+                        <image>eclipse-temurin:21-jre@sha256:d1e2f7eac915efbe98fcebecc46ea9cd4ddfae7ec11afffaf754983076a81f81</image>
                     </from>
                     <container>
                         <jvmFlags>
