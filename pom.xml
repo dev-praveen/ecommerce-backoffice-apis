@@ -118,6 +118,7 @@
                         <image>eclipse-temurin:21-jre@sha256:d1e2f7eac915efbe98fcebecc46ea9cd4ddfae7ec11afffaf754983076a81f81</image>
                     </from>
                     <container>
+                        <mainClass>com.praveen.jpa.EcommerceBackofficeApplication</mainClass>
                         <jvmFlags>
                             <jvmFlag>-Dspring.profiles.active=postgres</jvmFlag>
                         </jvmFlags>
