@@ -1,5 +1,6 @@
 package com.praveen.jpa.entity;
 
+import com.praveen.jpa.event.OrderEvent;
 import com.praveen.jpa.model.*;
 import lombok.*;
 import jakarta.persistence.*;
@@ -92,6 +93,19 @@ public class Order implements Serializable {
         .customerId(customer.getId())
         .status(status)
         .cancelledTimestamp(cancelledAt)
+        .build();
+  }
+
+  public OrderEvent toOrderEvent() {
+
+    return OrderEvent.builder()
+        .orderId(id)
+        .productName(productName)
+        .quantity(quantity)
+        .amount(amount)
+        .orderTime(String.valueOf(orderTime))
+        .status(status)
+        .customerName(customer.getFirstName())
         .build();
   }
 }

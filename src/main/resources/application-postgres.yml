@@ -1,4 +1,17 @@
 spring:
+  mail:
+    host: localhost
+    port: 1025
+    username: email_user
+    password: email_password
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+            required: false
   application:
     name: ecommerce-backoffice-apis
   datasource:
