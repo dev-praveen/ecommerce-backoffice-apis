@@ -1,13 +1,20 @@
 package com.praveen.jpa.resource;
 
+import com.icegreen.greenmail.configuration.GreenMailConfiguration;
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.util.GreenMailUtil;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import com.praveen.jpa.dao.CustomerRepository;
 import com.praveen.jpa.dao.OrderRepository;
 import com.praveen.jpa.entity.Address;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
 import com.praveen.jpa.model.*;
+import jakarta.mail.internet.MimeMessage;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -18,12 +25,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
@@ -34,6 +43,16 @@ class EcommerceResourceIntTest {
   @Container @ServiceConnection
   private static final PostgreSQLContainer<?> postgres =
       new PostgreSQLContainer<>("postgres:15-alpine");
+
+  @Container @ServiceConnection
+  private static final RabbitMQContainer rabbitmq =
+      new RabbitMQContainer("rabbitmq:3.8-management-alpine");
+
+  @RegisterExtension
+  static GreenMailExtension greenMail =
+      new GreenMailExtension(ServerSetupTest.SMTP)
+          .withConfiguration(GreenMailConfiguration.aConfig().withUser("test_user", "password"))
+          .withPerMethodLifecycle(false);
 
   @Autowired CustomerRepository customerRepository;
   @Autowired OrderRepository orderRepository;
@@ -70,6 +89,9 @@ class EcommerceResourceIntTest {
 
     assertThat(postgres.isCreated()).isTrue();
     assertThat(postgres.isRunning()).isTrue();
+
+    assertThat(rabbitmq.isCreated()).isTrue();
+    assertThat(rabbitmq.isRunning()).isTrue();
   }
 
   @Test
@@ -175,6 +197,23 @@ class EcommerceResourceIntTest {
     assertThat(response).isNotNull();
     assertThat(response.getBody()).isNotNull();
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+    Awaitility.await()
+        .atMost(10, TimeUnit.SECONDS)
+        .untilAsserted(
+            () -> {
+              MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
+              assertThat(receivedMessages).hasSize(1);
+              MimeMessage receivedMessage = receivedMessages[0];
+              assertThat(GreenMailUtil.getBody(receivedMessage))
+                  .contains(
+                      "Your order with orderNumber: "
+                          + response.getBody()
+                          + " has been created successfully.");
+              assertThat(receivedMessage.getAllRecipients()).hasSize(1);
+              assertThat(receivedMessage.getAllRecipients()[0].toString())
+                  .hasToString("email.test@gmail.com");
+            });
   }
 
   @Test

@@ -1,4 +1,11 @@
 spring:
+  mail:
+    password: password
+    username: test_user
+    host: localhost
+    port: 3025
+    protocol: smtp
+    test-connection: false
   jpa:
     show-sql: true
     properties:
