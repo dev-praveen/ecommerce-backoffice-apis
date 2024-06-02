@@ -155,7 +155,7 @@
                         </jvmFlags>
                         <entrypoint>
                             <arg>/bin/sh</arg>
-                            <arg>/install_docker_compose.sh</arg>
+                            <arg>./install_docker_compose.sh</arg>
                         </entrypoint>
                     </container>
                     <to>
