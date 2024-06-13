@@ -46,7 +46,7 @@ class EcommerceResourceIntTest {
 
   @Container @ServiceConnection
   private static final RabbitMQContainer rabbitmq =
-      new RabbitMQContainer("rabbitmq:3.8-management-alpine");
+      new RabbitMQContainer("rabbitmq:3.13.3-management-alpine");
 
   @RegisterExtension
   static GreenMailExtension greenMail =
@@ -85,7 +85,7 @@ class EcommerceResourceIntTest {
   }
 
   @Test
-  void postgresShouldCreateAndRun() {
+  void postgresAndRabbitMQShouldCreateAndRun() {
 
     assertThat(postgres.isCreated()).isTrue();
     assertThat(postgres.isRunning()).isTrue();

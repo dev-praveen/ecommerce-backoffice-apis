@@ -153,10 +153,6 @@
                         <jvmFlags>
                             <jvmFlag>-Dspring.profiles.active=postgres</jvmFlag>
                         </jvmFlags>
-                        <entrypoint>
-                            <arg>/bin/sh</arg>
-                            <arg>./install_docker_compose.sh</arg>
-                        </entrypoint>
                     </container>
                     <to>
                         <image>docker.io/dockerpraveen123/ecommerce-api</image>
