@@ -1,6 +1,5 @@
 package com.praveen.jpa.service;
 
-import com.praveen.jpa.config.RabbitMQConfig;
 import com.praveen.jpa.dao.AddressRepository;
 import com.praveen.jpa.dao.CustomerRepository;
 import com.praveen.jpa.dao.OrderRepository;
@@ -13,7 +12,6 @@ import com.praveen.jpa.exception.DuplicateCustomerException;
 import com.praveen.jpa.exception.OrderNotFoundException;
 import com.praveen.jpa.model.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,7 +32,6 @@ public class EcommerceService {
   private final OrderRepository orderRepository;
   private final CustomerRepository customerRepository;
   private final AddressRepository addressRepository;
-  private final RabbitTemplate rabbitTemplate;
 
   @Transactional
   public Long saveCustomer(CreateCustomerRequest customerRepresentation) {
@@ -68,9 +65,7 @@ public class EcommerceService {
 
     final var customer = findCustomer(customerId);
     final var order = Order.fromModel(orderRequest, customer);
-    final var orderId = orderRepository.save(order).getId();
-    publishEvent(order.toOrderEvent());
-    return orderId;
+    return orderRepository.save(order).getId();
   }
 
   public List<OrderRepresentation> fetchAllOrders(Long customerId) {
@@ -170,10 +165,5 @@ public class EcommerceService {
     }
     orderRepository.updateStatus(
         CANCEL_ORDER_STATUS, orderId, LocalDateTime.now(ZoneId.of("Asia/Kolkata")));
-  }
-
-  private void publishEvent(Object event) {
-
-    rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE, RabbitMQConfig.ROUTING_KEY, event);
   }
 }
