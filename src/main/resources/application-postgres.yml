@@ -22,6 +22,12 @@ springdoc:
     version: OPENAPI_3_1
   swagger-ui:
     path: /swagger-ui.html
-logging:
-  level:
-    sql: ${logging.enabled:debug}
+
+management:
+  endpoint:
+      health:
+        show-details: ALWAYS
+  endpoints:
+    web:
+      exposure:
+        include: '*'
