@@ -24,4 +24,10 @@ springdoc:
     path: /swagger-ui.html
 logging:
   level:
-    sql: ${logging.enabled:debug}
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
