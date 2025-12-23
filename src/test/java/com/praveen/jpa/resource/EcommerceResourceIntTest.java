@@ -17,9 +17,9 @@ import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -32,8 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EcommerceResourceIntTest {
 
   @Container @ServiceConnection
-  private static final PostgreSQLContainer<?> postgres =
-      new PostgreSQLContainer<>("postgres:15-alpine");
+  private static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:15-alpine");
 
   @Autowired CustomerRepository customerRepository;
   @Autowired OrderRepository orderRepository;
