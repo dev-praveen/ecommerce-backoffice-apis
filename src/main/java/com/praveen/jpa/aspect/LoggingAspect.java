@@ -15,17 +15,19 @@ public class LoggingAspect {
   @Before("execution(* com.praveen.jpa..*.* (..))")
   public void logBefore(JoinPoint joinPoint) {
     logger.info(
-        "Entering method: {} with arguments: {} ,Class Name:{}",
+        "Entering method: {} with arguments: {} ,Class Name:{}, isVirtualThread:{}",
         joinPoint.getSignature().getName(),
         joinPoint.getArgs(),
-        joinPoint.getSignature().getDeclaringTypeName());
+        joinPoint.getSignature().getDeclaringTypeName(),
+        Thread.currentThread().isVirtual());
   }
 
   @AfterReturning(pointcut = "execution(* com.praveen.jpa..*.* (..))")
   public void logAfter(JoinPoint joinPoint) {
     logger.info(
-        "Exiting method: {} ,Class Name:{}",
+        "Exiting method: {} ,Class Name:{}, isVirtualThread:{}",
         joinPoint.getSignature().getName(),
-        joinPoint.getSignature().getDeclaringTypeName());
+        joinPoint.getSignature().getDeclaringTypeName(),
+        Thread.currentThread().isVirtual());
   }
 }
