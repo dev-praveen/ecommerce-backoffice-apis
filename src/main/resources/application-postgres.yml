@@ -23,7 +23,9 @@ spring:
 springdoc:
   api-docs:
     version: OPENAPI_3_1
+    enabled: true
   swagger-ui:
+    enabled: true
     path: /swagger-ui.html
 logging:
   level:
@@ -34,3 +36,7 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+
+jwt:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem

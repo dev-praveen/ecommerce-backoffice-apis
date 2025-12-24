@@ -4,9 +4,6 @@ info:
   description: |-
     The E-Commerce API provides endpoints to manage customers, orders in an e-commerce system. It allows clients to retrieve customer information, place orders, manage customer accounts, and retrieve order details.
   version: v1
-servers:
-  - url: http://localhost:8080
-    description: local swagger URL
 tags:
   - name: ecommerce-resource
     description: ecommerce-resource to manage customers, orders
