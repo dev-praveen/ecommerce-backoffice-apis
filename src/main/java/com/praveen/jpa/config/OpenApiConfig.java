@@ -1,9 +1,12 @@
 package com.praveen.jpa.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
@@ -20,6 +23,8 @@ public class OpenApiConfig {
 
   @Bean(name = "apiInfo")
   public OpenAPI apiInfo() {
+
+    final String securitySchemeName = "bearerAuth";
 
     Map<String, Object> extensions = new HashMap<>();
     extensions.put("Mobile number", "+91-6301892380");
@@ -38,6 +43,16 @@ public class OpenApiConfig {
                         .name("Praveen")
                         .extensions(extensions))
                 .termsOfService(
-                    "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service"));
+                    "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service"))
+        .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+        .components(
+            new Components()
+                .addSecuritySchemes(
+                    securitySchemeName,
+                    new SecurityScheme()
+                        .name(securitySchemeName)
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")));
   }
 }
