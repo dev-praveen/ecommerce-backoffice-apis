@@ -1,7 +1,10 @@
 package com.praveen.jpa.resource;
 
+import com.praveen.jpa.config.TestJwtConfig;
 import com.praveen.jpa.dao.CustomerRepository;
 import com.praveen.jpa.dao.OrderRepository;
+import com.praveen.jpa.dto.TokenRequest;
+import com.praveen.jpa.dto.TokenResponse;
 import com.praveen.jpa.entity.Address;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
@@ -28,7 +31,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
 @ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = TestJwtConfig.class)
 class EcommerceResourceIntTest {
 
   @Container @ServiceConnection
@@ -38,6 +43,7 @@ class EcommerceResourceIntTest {
   @Autowired OrderRepository orderRepository;
   @LocalServerPort private Integer port;
   private RestClient restClient;
+  private String jwtToken;
 
   private static List<Order> getOrders() {
 
@@ -60,8 +66,25 @@ class EcommerceResourceIntTest {
 
   @BeforeEach
   void setUp() {
-    restClient = RestClient.builder().baseUrl("http://localhost:" + port + "/ecommerce").build();
+    restClient = RestClient.builder().baseUrl("http://localhost:" + port).build();
+    jwtToken = obtainJwtToken();
     customerRepository.deleteAll();
+  }
+
+  private String obtainJwtToken() {
+
+    TokenRequest request = new TokenRequest("praveen", "password", "read");
+    TokenResponse response =
+        restClient
+            .post()
+            .uri("/auth/token")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(request)
+            .retrieve()
+            .body(TokenResponse.class);
+    assertThat(response).isNotNull();
+    assertThat(response.token()).isNotBlank();
+    return response.token();
   }
 
   @Test
@@ -77,9 +100,10 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .post()
-            .uri("/customer")
+            .uri("/ecommerce/customer")
             .body(MockResourceData.getCustomerRequest())
             .contentType(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(Long.class);
 
@@ -94,9 +118,10 @@ class EcommerceResourceIntTest {
     try {
       restClient
           .post()
-          .uri("/customer")
+          .uri("/ecommerce/customer")
           .body(MockResourceData.getCustomerRequest())
           .contentType(MediaType.APPLICATION_JSON)
+          .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
           .retrieve()
           .toEntity(ProblemDetail.class);
     } catch (HttpClientErrorException exception) {
@@ -115,9 +140,10 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .patch()
-            .uri("/customer/{customerId}", existingCustomer)
+            .uri("/ecommerce/customer/{customerId}", existingCustomer)
             .body(customerUpdateInfo)
             .contentType(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(Void.class);
 
@@ -139,12 +165,13 @@ class EcommerceResourceIntTest {
             .uri(
                 uriBuilder ->
                     uriBuilder
-                        .path("/customers")
+                        .path("/ecommerce/customers")
                         .queryParam("pageNo", 1)
                         .queryParam("pageSize", 2)
                         .queryParam("sortBy", "id")
                         .queryParam("sortDirection", "asc")
                         .build())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(CustomerResponse.class);
 
@@ -165,9 +192,10 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .post()
-            .uri("/placeOrder/{customerId}", existingCustomer)
+            .uri("/ecommerce/placeOrder/{customerId}", existingCustomer)
             .body(MockResourceData.getOrderRequest())
             .contentType(MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(Long.class);
 
@@ -183,7 +211,8 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .get()
-            .uri("/orders/{customerId}", customer.getId())
+            .uri("/ecommerce/orders/{customerId}", customer.getId())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(new ParameterizedTypeReference<List<OrderRepresentation>>() {});
 
@@ -199,7 +228,8 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .delete()
-            .uri("/customer/{customerId}", customer.getId())
+            .uri("/ecommerce/customer/{customerId}", customer.getId())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(Void.class);
 
@@ -219,13 +249,14 @@ class EcommerceResourceIntTest {
             .uri(
                 uriBuilder ->
                     uriBuilder
-                        .path("/orders")
+                        .path("/ecommerce/orders")
                         .queryParam("orderStatus", "active")
                         .queryParam("pageNo", 1)
                         .queryParam("pageSize", 2)
                         .queryParam("sortBy", "id")
                         .queryParam("sortDirection", "asc")
                         .build())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(OrderResponse.class);
 
@@ -244,7 +275,8 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .get()
-            .uri("/customer/{customerId}", customer.getId())
+            .uri("/ecommerce/customer/{customerId}", customer.getId())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(CustomerRepresentation.class);
 
@@ -257,7 +289,12 @@ class EcommerceResourceIntTest {
   void shouldThrowExceptionForInvalidCustomerId() {
 
     try {
-      restClient.get().uri("/customer/{customerId}", 12).retrieve().toEntity(ProblemDetail.class);
+      restClient
+          .get()
+          .uri("/ecommerce/customer/{customerId}", 12)
+          .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
+          .retrieve()
+          .toEntity(ProblemDetail.class);
     } catch (HttpClientErrorException exception) {
       final var message = exception.getMessage();
       assertThat(message).contains("Customer not found in database with id 12");
@@ -282,7 +319,8 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .put()
-            .uri("/customer/address/{customerId}", customer.getId())
+            .uri("/ecommerce/customer/address/{customerId}", customer.getId())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .body(MockResourceData.getAddressRequest())
             .retrieve()
             .toEntity(Void.class);
@@ -307,12 +345,13 @@ class EcommerceResourceIntTest {
             .uri(
                 uriBuilder ->
                     uriBuilder
-                        .path("/customersInfo")
+                        .path("/ecommerce/customersInfo")
                         .queryParam("pageNo", 1)
                         .queryParam("pageSize", 2)
                         .queryParam("sortBy", "id")
                         .queryParam("sortDirection", "asc")
                         .build())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(CustomerInfoData.class);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -331,7 +370,11 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .delete()
-            .uri("/cancelOrder/customer/{customerId}/order/{orderId}", customer.getId(), orderId)
+            .uri(
+                "/ecommerce/cancelOrder/customer/{customerId}/order/{orderId}",
+                customer.getId(),
+                orderId)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(Void.class);
 
@@ -353,7 +396,8 @@ class EcommerceResourceIntTest {
     try {
       restClient
           .delete()
-          .uri("/cancelOrder/customer/{customerId}/order/{orderId}", customer.getId(), 1)
+          .uri("/ecommerce/cancelOrder/customer/{customerId}/order/{orderId}", customer.getId(), 1)
+          .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
           .retrieve()
           .toEntity(ProblemDetail.class);
     } catch (HttpClientErrorException exception) {
@@ -372,7 +416,11 @@ class EcommerceResourceIntTest {
     try {
       restClient
           .delete()
-          .uri("/cancelOrder/customer/{customerId}/order/{orderId}", customer.getId(), orderId)
+          .uri(
+              "/ecommerce/cancelOrder/customer/{customerId}/order/{orderId}",
+              customer.getId(),
+              orderId)
+          .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
           .retrieve()
           .toEntity(ProblemDetail.class);
     } catch (HttpClientErrorException exception) {
@@ -389,7 +437,8 @@ class EcommerceResourceIntTest {
     final var response =
         restClient
             .get()
-            .uri("/customer/search/{customerName}", "rana")
+            .uri("/ecommerce/customer/search/{customerName}", "rana")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .toEntity(new ParameterizedTypeReference<List<CustomerInfo>>() {});
 
@@ -406,7 +455,8 @@ class EcommerceResourceIntTest {
     try {
       restClient
           .get()
-          .uri("/customer/search/{customerName}", searchName)
+          .uri("/ecommerce/customer/search/{customerName}", searchName)
+          .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
           .retrieve()
           .toEntity(ProblemDetail.class);
     } catch (HttpClientErrorException exception) {
