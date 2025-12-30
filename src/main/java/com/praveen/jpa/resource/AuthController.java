@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,7 +37,7 @@ public class AuthController {
       tags = {"jwt-resource"},
       responses = {
         @ApiResponse(
-            responseCode = "201",
+            responseCode = "200",
             description = "Created",
             content = {
               @Content(
@@ -46,7 +47,7 @@ public class AuthController {
       })
   @PostMapping("/token")
   @SecurityRequirements
-  public TokenResponse generateToken(
+  public ResponseEntity<TokenResponse> generateToken(
       @Parameter(name = "TokenRequest", required = true) @Valid @RequestBody
           TokenRequest tokenRequest) {
 
@@ -54,6 +55,7 @@ public class AuthController {
     UsernamePasswordAuthenticationToken authRequest =
         new UsernamePasswordAuthenticationToken(tokenRequest.userName(), tokenRequest.password());
     Authentication authentication = authenticationManager.authenticate(authRequest);
-    return tokenService.generateToken(authentication);
+    final var tokenResponse = tokenService.generateToken(authentication);
+    return ResponseEntity.ok(tokenResponse);
   }
 }
