@@ -21,7 +21,7 @@
             "**/model/*.java",
             "**/aspect/*.java"
         </sonar.exclusions>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -141,7 +141,7 @@
                 <configuration>
                     <from>
                         <image>
-                            eclipse-temurin:21-jre@sha256:d1e2f7eac915efbe98fcebecc46ea9cd4ddfae7ec11afffaf754983076a81f81
+                            eclipse-temurin:25-jre@sha256:96bccca442e8842a7366df338f5960e3342862ea6b8d42b97009a3dfd8602547
                         </image>
                     </from>
                     <container>
