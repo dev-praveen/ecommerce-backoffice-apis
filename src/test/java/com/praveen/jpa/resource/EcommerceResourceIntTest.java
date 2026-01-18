@@ -1,6 +1,7 @@
 package com.praveen.jpa.resource;
 
 import com.praveen.jpa.config.TestJwtConfig;
+import com.praveen.jpa.dao.AppUserRepository;
 import com.praveen.jpa.dao.CustomerRepository;
 import com.praveen.jpa.dao.OrderRepository;
 import com.praveen.jpa.dto.TokenRequest;
@@ -9,6 +10,7 @@ import com.praveen.jpa.entity.Address;
 import com.praveen.jpa.entity.Customer;
 import com.praveen.jpa.entity.Order;
 import com.praveen.jpa.model.*;
+import com.praveen.jpa.service.RegistrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,8 @@ class EcommerceResourceIntTest {
 
   @Autowired CustomerRepository customerRepository;
   @Autowired OrderRepository orderRepository;
+  @Autowired RegistrationService registrationService;
+  @Autowired AppUserRepository appUserRepository;
   @LocalServerPort private Integer port;
   private RestClient restClient;
   private String jwtToken;
@@ -68,11 +72,13 @@ class EcommerceResourceIntTest {
   void setUp() {
     restClient = RestClient.builder().baseUrl("http://localhost:" + port).build();
     jwtToken = obtainJwtToken();
+    appUserRepository.deleteAll();
     customerRepository.deleteAll();
   }
 
   private String obtainJwtToken() {
 
+    registrationService.register("praveen", "password");
     TokenRequest request = new TokenRequest("praveen", "password", "read");
     TokenResponse response =
         restClient
@@ -88,7 +94,7 @@ class EcommerceResourceIntTest {
   }
 
   @Test
-  void postgresAndRabbitMQShouldCreateAndRun() {
+  void postgresShouldCreateAndRun() {
 
     assertThat(postgres.isCreated()).isTrue();
     assertThat(postgres.isRunning()).isTrue();

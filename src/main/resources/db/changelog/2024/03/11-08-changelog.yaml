@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1801202601-1
+      author: praveen
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: app_user_sequence
+            startValue: 40000
+  - changeSet:
+      id: 1801202601-2
+      author: praveen
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_app_user
+                  name: id
+                  type: INT
+              - column:
+                  name: user_name
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: authorities
+                  type: VARCHAR(255)
+            tableName: app_user

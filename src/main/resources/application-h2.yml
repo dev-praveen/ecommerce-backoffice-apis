@@ -1,4 +1,7 @@
 spring:
+  threads:
+    virtual:
+      enabled: true
   application:
     name: ecommerce-backoffice-apis
   datasource:
@@ -31,3 +34,7 @@ springdoc:
 logging:
   level:
     sql: ${logging.enabled:debug}
+
+jwt:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem

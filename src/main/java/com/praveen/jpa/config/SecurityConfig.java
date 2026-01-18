@@ -6,6 +6,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.praveen.jpa.service.AppUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,14 +17,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -32,17 +33,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
   private final JwtProperties jwtProperties;
-
-  @Bean
-  public InMemoryUserDetailsManager users() {
-    return new InMemoryUserDetailsManager(
-        User.withUsername("praveen").password("{noop}password").authorities("read").build());
-  }
+  private final AppUserDetailsService appUserDetailsService;
 
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) {
 
-    return http.authorizeHttpRequests(
+    return http.userDetailsService(appUserDetailsService)
+        .authorizeHttpRequests(
             auth ->
                 auth.requestMatchers(
                         "/swagger-ui.html",
@@ -50,7 +47,8 @@ public class SecurityConfig {
                         "/v3/api-docs/**",
                         "/swagger-resources/**",
                         "/webjars/**",
-                        "/auth/token")
+                        "/auth/token",
+                        "/user/register")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
@@ -86,5 +84,10 @@ public class SecurityConfig {
   @Bean
   AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) {
     return authConfig.getAuthenticationManager();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }
