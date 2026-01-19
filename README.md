@@ -1,6 +1,6 @@
 # E-Commerce api service
 
-This is a Spring Boot application using Java 17. It provides the E-Commerce API endpoints to manage customers, orders in an e-commerce system.
+This is a Spring Boot application using Java 25. It provides the E-Commerce API endpoints to manage customers, orders in an e-commerce system.
 
 ## Building the application
 
