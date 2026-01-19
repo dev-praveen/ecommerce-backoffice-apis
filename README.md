@@ -13,7 +13,7 @@ Running the Application Locally
 To run the application locally, you can use the following command:
 
 ./mvnw spring-boot:run -Dspring.profiles.active=h2
-This command will spin up an H2 in-memory database with some pre-loaded data. Ensure you have Java 17 installed on your machine before running this command.
+This command will spin up an H2 in-memory database with some pre-loaded data. Ensure you have Java 25 installed on your machine before running this command.
 swagger url: http://localhost:8080/swagger-ui/index.html
 
 Recommended IDE
